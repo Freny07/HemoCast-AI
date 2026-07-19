@@ -1,5 +1,3 @@
-import { date } from 'pydantic';
-
 const API_BASE = "http://localhost:8000/api";
 
 async function fetchJson(url: string, options?: RequestInit) {
@@ -18,7 +16,7 @@ async function fetchJson(url: string, options?: RequestInit) {
 
 export const api = {
   // Auth
-  async login(username: string, password: str): Promise<any> {
+  async login(username: string, password: string): Promise<any> {
     try {
       return await fetchJson(`${API_BASE}/auth/login`, {
         method: "POST",
@@ -193,7 +191,7 @@ export const api = {
         const lower = Math.max(0, Math.round(predicted * 0.75));
         const upper = Math.round(predicted * 1.25);
         
-        forecastPoints.append || forecastPoints.push({
+        forecastPoints.push({
           date: nextDate.toISOString().split("T")[0],
           predicted_demand: predicted,
           confidence_lower: lower,
