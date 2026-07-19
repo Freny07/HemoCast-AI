@@ -11,7 +11,7 @@ import Inventory from './pages/Inventory';
 import DonorTargeting from './pages/DonorTargeting';
 import HospitalRequest from './pages/HospitalRequest';
 import InteractiveMap from './pages/InteractiveMap';
-import AboutImpact from './pages/AboutImpact';
+
 
 import { BellRing, X } from 'lucide-react';
 
@@ -80,8 +80,6 @@ export default function App() {
         return <HospitalRequest triggerNotification={triggerNotification} user={user} />;
       case 'map':
         return <InteractiveMap />;
-      case 'about':
-        return <AboutImpact />;
       default:
         return <Landing setCurrentPage={setCurrentPage} user={user} />;
     }
@@ -91,7 +89,7 @@ export default function App() {
   const hasSidebar = user && !['landing', 'login'].includes(currentPage);
 
   return (
-    <div className="min-h-screen bg-[#070b13] text-slate-100 flex font-sans">
+    <div className="min-h-screen bg-[#070b13] text-slate-100 font-sans">
       {/* Toast Notification slide-in banner */}
       {toast && (
         <div className="fixed top-6 right-6 z-50 w-80 bg-slate-900/95 border border-slate-800 rounded-2xl p-4 shadow-2xl flex gap-3 animate-in slide-in-from-right-6 duration-300">

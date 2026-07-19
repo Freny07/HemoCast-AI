@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --color-crimson-50: #fef2f2;
-  --color-crimson-100: #fee2e2;
-  --color-crimson-200: #fecaca;
-  --color-crimson-300: #fca5a5;
-  --color-crimson-400: #f87171;
-  --color-crimson-500: #ef4444;
-  --color-crimson-600: #dc2626;
-  --color-crimson-700: #b91c1c;
-  --color-crimson-800: #991b1b;
-  --color-crimson-900: #7f1d1d;
+  --color-crimson-50: #fff1f2;
+  --color-crimson-100: #ffe4e6;
+  --color-crimson-200: #fecdd3;
+  --color-crimson-300: #fda4af;
+  --color-crimson-400: #fb7185;
+  --color-crimson-500: #f43f5e; /* Vibrant Neon Rose-Red */
+  --color-crimson-600: #e11d48; /* Premium Rose-Crimson */
+  --color-crimson-700: #be123c; /* Deep Ruby Red */
+  --color-crimson-800: #9f1239;
+  --color-crimson-900: #881337;
   
-  --color-slate-950: #020617;
-  --color-slate-900: #0f172a;
-  --color-slate-800: #1e293b;
-  --color-slate-700: #334155;
-  --color-slate-600: #475569;
+  --color-slate-950: #030712;
+  --color-slate-900: #070d1e; /* Deep Midnight Navy */
+  --color-slate-800: #0f1a36; /* Midnight Slate Card */
+  --color-slate-700: #1d2c54; /* Border Navy */
+  --color-slate-600: #3b4e7a;
   
   --color-emerald-500: #10b981;
   --color-amber-500: #f59e0b;
@@ -24,7 +24,7 @@
 
 /* Custom styles and scrollbars for a premium dark mode feel */
 body {
-  background-color: #0b0f19;
+  background-color: #040813; /* Elegant Midnight Obsidian */
   color: #f1f5f9;
   font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;

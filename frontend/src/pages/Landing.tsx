@@ -14,6 +14,12 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
     { blood: "O+", comp: "Platelets", location: "Monsoon Area Clinic", urgency: "High Need" }
   ];
 
+  const handleNavigation = (isLogin: boolean, role: string) => {
+    localStorage.setItem('login_preset_is_login', String(isLogin));
+    localStorage.setItem('login_preset_role', role);
+    setCurrentPage('login');
+  };
+
   return (
     <div className="min-h-screen bg-[#070b13] text-slate-100 flex flex-col font-sans overflow-hidden">
       {/* Shortage Ticker */}
@@ -41,19 +47,19 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
               Built for ImpactForge Hackathon
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
               AI-Powered Blood <br />
               <span className="bg-gradient-to-r from-crimson-500 to-red-400 bg-clip-text text-transparent">
                 Forecasting
-              </span> to Prevent <br />
-              Shortages Ahead of Time.
+              </span> <br />
+              to Prevent Shortages.
             </h1>
 
             <p className="text-slate-400 text-lg leading-relaxed max-w-xl">
               HemoCast AI shifts blood management from reactive to predictive. By analyzing weather patterns, seasonal diseases, surgeries, and historical donations, we forecast demand and redirect surplus units before they expire.
             </p>
 
-            <div className="flex flex-wrap gap-4 pt-2">
+            <div className="flex flex-wrap gap-3.5 pt-2">
               {user ? (
                 <button
                   onClick={() => setCurrentPage('dashboard')}
@@ -63,21 +69,28 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
                   <ArrowRight className="w-5 h-5" />
                 </button>
               ) : (
-                <button
-                  onClick={() => setCurrentPage('login')}
-                  className="flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-crimson-600 to-crimson-700 hover:from-crimson-500 hover:to-crimson-600 text-white font-bold rounded-xl shadow-lg shadow-crimson-950/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
-                >
-                  Access Platform Portals
-                  <ArrowRight className="w-5 h-5" />
-                </button>
+                <>
+                  <button
+                    onClick={() => handleNavigation(false, 'donor')}
+                    className="flex items-center gap-2 px-5 py-3.5 bg-gradient-to-r from-crimson-600 to-crimson-700 hover:from-crimson-500 hover:to-crimson-600 text-white font-bold rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-sm"
+                  >
+                    Register as Donor
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleNavigation(true, 'hospital')}
+                    className="px-5 py-3.5 bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 font-bold rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-sm"
+                  >
+                    Hospital Portal
+                  </button>
+                  <button
+                    onClick={() => handleNavigation(true, 'bank')}
+                    className="px-5 py-3.5 bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 font-bold rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-sm"
+                  >
+                    Blood Bank Portal
+                  </button>
+                </>
               )}
-
-              <button
-                onClick={() => setCurrentPage('about')}
-                className="px-6 py-3.5 bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-300 font-semibold rounded-xl transition-all duration-200"
-              >
-                Read Impact Case Study
-              </button>
             </div>
           </div>
 
@@ -202,7 +215,6 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs">
           <p>© 2026 HemoCast AI. Built for the ImpactForge Hackathon.</p>
           <div className="flex gap-6">
-            <button onClick={() => setCurrentPage('about')} className="hover:text-slate-350 transition-colors">Judging Criteria</button>
             <button onClick={() => setCurrentPage('map')} className="hover:text-slate-350 transition-colors">Coverage Map</button>
           </div>
         </div>

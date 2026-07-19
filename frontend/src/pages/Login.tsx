@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { api } from '../api';
 import { Droplet, Shield, Lock, User, Hospital, Building, Award } from 'lucide-react';
 
@@ -16,6 +16,29 @@ export default function Login({ onLoginSuccess, setCurrentPage }: LoginProps) {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const isLoginPreset = localStorage.getItem('login_preset_is_login');
+    const rolePreset = localStorage.getItem('login_preset_role');
+    if (isLoginPreset !== null) {
+      setIsLogin(isLoginPreset === 'true');
+      localStorage.removeItem('login_preset_is_login');
+    }
+    if (rolePreset !== null) {
+      setRole(rolePreset);
+      if (rolePreset === 'bank') {
+        setUsername('bank');
+        setPassword('password123');
+      } else if (rolePreset === 'hospital') {
+        setUsername('hospital');
+        setPassword('password123');
+      } else if (rolePreset === 'donor') {
+        setUsername('donor');
+        setPassword('password123');
+      }
+      localStorage.removeItem('login_preset_role');
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
