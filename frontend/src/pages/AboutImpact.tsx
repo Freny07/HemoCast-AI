@@ -48,7 +48,7 @@ export default function AboutImpact() {
         </div>
         <h1 className="text-3xl font-extrabold text-white">How HemoCast AI Targets Judging Criteria</h1>
         <p className="text-slate-450 text-sm max-w-2xl mx-auto">
-          An overview of the clinical problems solved, and how our approach directly answers the ImpactForge Hackathon benchmarks.
+          An overview of the clinical problems we solve, and how our approach directly addresses each ImpactForge Hackathon benchmark.
         </p>
       </header>
 
@@ -59,10 +59,10 @@ export default function AboutImpact() {
             <ShieldAlert className="w-5 h-5 text-crimson-500" /> The Status Quo Problem
           </h3>
           <p className="text-slate-400 text-xs leading-relaxed">
-            Blood banking networks operate reactively: they wait for patients to bleed before request pings are dispatched, or spam thousands of donors with generic SMS blasts, causing high alert fatigue. 
+            Blood banking networks operate reactively — waiting for patients to bleed before request pings are dispatched, or blasting thousands of donors with generic SMS alerts, causing high alert fatigue.
           </p>
           <p className="text-slate-400 text-xs leading-relaxed">
-            Furthermore, critical blood products like **Platelets expire in just 5 days**, leading to high wastage rates, while rare blood types (like AB- or Bombay group) remain heavily underserved because standard models neglect their low-frequency distributions.
+            Furthermore, critical blood products like <strong>Platelets expire in just 5 days</strong>, leading to high wastage rates, while rare blood types (like AB- or Bombay group) remain heavily underserved because standard models neglect their low-frequency distributions.
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export default function AboutImpact() {
             HemoCast AI bridges this gap with machine learning. By forecasting regional deficits 1-7 days before they hit, blood bank directors can plan ahead. 
           </p>
           <p className="text-slate-400 text-xs leading-relaxed">
-            The platform's **Redistribution Engine** flags units at high risk of expiry, suggesting transfers to hospitals with immediate scheduled surgeries. The **Target Recruiter** contacts only highly eligible, local donors, creating a closed-loop system that prevents shortages before they happen.
+            The platform's <strong>Redistribution Engine</strong> flags units at high risk of expiry, suggesting transfers to hospitals with imminent scheduled surgeries. The <strong>Donor Recruiter</strong> contacts only highly eligible, nearby donors — creating a closed-loop system that prevents shortages before they occur.
           </p>
         </div>
       </div>

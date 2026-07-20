@@ -473,7 +473,7 @@ export const api = {
         reply = "I found 2 batches of Platelets expiring within the next 3 days:\n- 12 units of A+ Platelets expiring tomorrow\n- 6 units of O+ Platelets expiring tomorrow\n\nI recommend contacting Bhavnagar Civil Hospital to arrange an immediate transfer, as they currently have a pending request for 6 units of A+ Platelets.";
       } else if (msg.includes("units") || msg.includes("stock") || msg.includes("avail") || msg.includes("ab-") || msg.includes("o+")) {
         intent = "stock_check";
-        reply = "Here matches from our live inventory:\n- 12 units A+ Platelets (Expiring tomorrow)\n- 8 units O+ Whole Blood (Expiring in 2 days)\n- 10 units AB- Packed RBC (Suggested transfer to Ahmedabad Civil due to low local demand)";
+        reply = "Here are matches from our live inventory:\n- 12 units A+ Platelets (Expiring tomorrow)\n- 8 units O+ Whole Blood (Expiring in 2 days)\n- 10 units AB- Packed RBC (Suggested transfer to Ahmedabad Civil due to low local demand)";
       } else if (msg.includes("forecast") || msg.includes("predict") || msg.includes("demand")) {
         intent = "forecast_query";
         reply = "HemoCast AI model forecasts for next week:\n- **Platelets (A+):** 40% demand increase due to rising post-monsoon dengue caseload.\n- **Whole Blood / RBC (O+):** 15% increase in trauma demand due to highway transit traffic during upcoming festivals.\n\nPre-positioning safety stocks is advised.";

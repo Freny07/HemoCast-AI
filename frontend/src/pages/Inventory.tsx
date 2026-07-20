@@ -106,7 +106,7 @@ export default function Inventory({ triggerNotification }: InventoryProps) {
         <div>
           <h1 className="text-2xl font-bold text-white">Live Stock & Expiry Registry</h1>
           <p className="text-slate-450 text-sm mt-1">
-            Real-time tracking of units by type and location, integrated with smart redistribution routing.
+            Real-time tracking of all blood units by type and expiry, with AI-powered redistribution routing.
           </p>
         </div>
         <button
@@ -251,7 +251,7 @@ export default function Inventory({ triggerNotification }: InventoryProps) {
                         </button>
                       ) : (
                         <span className="text-[10px] font-semibold text-emerald-450 flex items-center justify-end gap-1 px-3">
-                          <Check className="w-3.5 h-3.5" /> Checked
+                          <Check className="w-3.5 h-3.5" /> No Action Needed
                         </span>
                       )}
                     </td>

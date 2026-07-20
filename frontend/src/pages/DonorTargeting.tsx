@@ -88,7 +88,7 @@ export default function DonorTargeting({ triggerNotification }: DonorTargetingPr
       <header>
         <h1 className="text-2xl font-bold text-white">Donor Target Recruiter</h1>
         <p className="text-slate-450 text-sm mt-1">
-          Rank donors dynamically by geolocation distance, donation timeline limits, and predicted response likelihood.
+          Shortlists and ranks eligible donors by proximity, donation eligibility, and predicted response likelihood to minimize alert fatigue.
         </p>
       </header>
 
@@ -123,7 +123,7 @@ export default function DonorTargeting({ triggerNotification }: DonorTargetingPr
 
         <div className="flex items-center gap-2 text-xxs text-slate-400 bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-3 max-w-md">
           <Info className="w-4 h-4 text-crimson-500 shrink-0" />
-          <span>The donor model ranks O- universal donors and group-specific matches by historical response rates to reduce alert fatigue.</span>
+          <span>The donor model ranks O- universal donors and group-specific matches by historical response rates to prevent alert fatigue and over-messaging.</span>
         </div>
       </div>
 
@@ -243,7 +243,7 @@ export default function DonorTargeting({ triggerNotification }: DonorTargetingPr
               className="w-full py-3 bg-gradient-to-r from-crimson-600 to-crimson-700 hover:from-crimson-500 hover:to-crimson-600 disabled:bg-slate-900 text-white font-bold rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-2"
             >
               <Send className="w-3.5 h-3.5" />
-              {sending ? "Triggering Broadcast..." : "Send Targeted Pings"}
+              {sending ? "Sending Messages..." : "Send Outreach Messages"}
             </button>
           </div>
         </div>

@@ -115,7 +115,7 @@ export default function HospitalRequest({ triggerNotification, user }: HospitalR
         <div>
           <h1 className="text-2xl font-bold text-white">Hospital Request Portal</h1>
           <p className="text-slate-450 text-sm mt-1">
-            File standard replenishment orders or initiate emergency SOS pings to paged regional networks.
+            File standard replenishment orders or trigger an emergency SOS broadcast to alert regional blood bank networks.
           </p>
         </div>
         <button
@@ -287,7 +287,7 @@ export default function HospitalRequest({ triggerNotification, user }: HospitalR
                 <ShieldAlert className="w-6 h-6 text-crimson-500 animate-pulse" />
                 <div>
                   <h3 className="font-extrabold text-lg">ONE-TAP SOS BROADCAST CENTER</h3>
-                  <span className="text-xxs text-crimson-400 font-bold uppercase tracking-wider">Broadcasting priority beacon</span>
+                  <span className="text-xxs text-crimson-400 font-bold uppercase tracking-wider">Broadcasting emergency beacon to all regional networks</span>
                 </div>
               </div>
               <button 
@@ -303,7 +303,7 @@ export default function HospitalRequest({ triggerNotification, user }: HospitalR
               {!sosResult ? (
                 <form onSubmit={handleTriggerSOS} className="space-y-4">
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Triggering the SOS beacon immediately bypasses standard order delays. It searches neighboring banks for matching stock and contacts all eligible universal/matching donors within 15km via priority SMS/WhatsApp loops.
+                    Triggering the SOS beacon immediately bypasses standard order delays. It searches neighboring banks for matching stock and contacts all eligible universal/matching donors within 15 km via priority SMS and WhatsApp.
                   </p>
 
                   <div className="grid grid-cols-3 gap-4">
@@ -363,7 +363,7 @@ export default function HospitalRequest({ triggerNotification, user }: HospitalR
                     className="w-full py-3.5 bg-gradient-to-r from-crimson-600 to-crimson-700 hover:from-crimson-500 hover:to-crimson-600 text-white font-black rounded-xl text-sm shadow-lg shadow-crimson-950/40 transition-all flex items-center justify-center gap-2"
                   >
                     <ShieldAlert className="w-5 h-5" />
-                    {sosSimulating ? "CONNECTING TO EMERGENCY LOOPS..." : "BROADCAST SOS EMERGENCY DETECT"}
+                    {sosSimulating ? "CONNECTING TO EMERGENCY NETWORKS..." : "BROADCAST EMERGENCY SOS"}
                   </button>
                 </form>
               ) : (

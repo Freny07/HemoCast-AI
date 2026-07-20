@@ -41,7 +41,7 @@ export default function Forecast() {
       <header>
         <h1 className="text-2xl font-bold text-white">AI Forecasting & Long-Horizon Planning</h1>
         <p className="text-slate-450 text-sm mt-1">
-          Machine learning demand forecasting using scikit-learn models trained on climate data, disease surveillance, and scheduled surgeries.
+          ML-driven demand forecasting using scikit-learn models trained on climate data, disease surveillance, and scheduled surgical calendars.
         </p>
       </header>
 
@@ -203,7 +203,7 @@ export default function Forecast() {
                 <div className="space-y-1">
                   <h4 className="text-xs font-bold text-white">HIGH-NEED MONTH FLAG DETECTED</h4>
                   <p className="text-xxs text-slate-400 leading-relaxed">
-                    Aggregate predictions for this month exceed historical averages by over 10%. We suggest initiating donation drive procurement targets at Alang Port and local universities {forecastData.change_vs_average_percent}% ahead of time.
+                    Aggregate predictions for this period exceed historical averages by over 10%. Consider initiating early donation drive procurement at Alang Port and local universities — approximately {forecastData.change_vs_average_percent}% ahead of schedule.
                   </p>
                 </div>
               </div>

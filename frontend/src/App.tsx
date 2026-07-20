@@ -11,6 +11,7 @@ import Inventory from './pages/Inventory';
 import DonorTargeting from './pages/DonorTargeting';
 import HospitalRequest from './pages/HospitalRequest';
 import InteractiveMap from './pages/InteractiveMap';
+import AboutImpact from './pages/AboutImpact';
 
 
 import { BellRing, X } from 'lucide-react';
@@ -80,6 +81,8 @@ export default function App() {
         return <HospitalRequest triggerNotification={triggerNotification} user={user} />;
       case 'map':
         return <InteractiveMap />;
+      case 'about':
+        return <AboutImpact />;
       default:
         return <Landing setCurrentPage={setCurrentPage} user={user} />;
     }

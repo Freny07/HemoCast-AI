@@ -495,7 +495,7 @@ def chatbot_query(query: schemas.ChatQuery, db: Session = Depends(get_db)):
     
     today = datetime.date.today()
     
-    # 1. Check for plateletes expiring queries
+    # 1. Check for platelets expiring queries
     if "platelet" in msg and ("expire" in msg or "expiry" in msg or "old" in msg):
         intent = "platelet_expiry"
         # Find platelets expiring in the next 3 days

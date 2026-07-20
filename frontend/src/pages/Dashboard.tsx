@@ -46,7 +46,7 @@ export default function Dashboard({ user, setCurrentPage, triggerNotification }:
       <div className="flex-1 flex items-center justify-center min-h-screen bg-[#070b13]">
         <div className="text-center space-y-4">
           <div className="w-12 h-12 rounded-full border-4 border-t-crimson-600 border-r-transparent border-slate-800 animate-spin mx-auto"></div>
-          <p className="text-slate-400 text-sm font-medium">Querying predictive databases...</p>
+          <p className="text-slate-400 text-sm font-medium">Loading your dashboard...</p>
         </div>
       </div>
     );
@@ -61,7 +61,7 @@ export default function Dashboard({ user, setCurrentPage, triggerNotification }:
         <header className="flex justify-between items-center pb-6 border-b border-slate-850">
           <div>
             <h1 className="text-2xl font-bold text-white">Welcome back, {data.name}!</h1>
-            <p className="text-slate-400 text-sm">Your donations make a real-world predictive difference.</p>
+            <p className="text-slate-400 text-sm">Your donations keep the forecasting network alive and communities safe.</p>
           </div>
           <span className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-950/30 text-emerald-400 border border-emerald-900/30 text-xs font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> {data.eligibility}
@@ -84,7 +84,7 @@ export default function Dashboard({ user, setCurrentPage, triggerNotification }:
               <TrendingUp className="w-6 h-6" />
             </div>
             <div>
-              <span className="text-xxs font-bold uppercase tracking-wider text-slate-500">Active Streaks</span>
+              <span className="text-xxs font-bold uppercase tracking-wider text-slate-500">Donation Streak</span>
               <p className="text-2xl font-extrabold text-white">{data.streak_weeks} Weeks</p>
             </div>
           </div>
@@ -103,12 +103,12 @@ export default function Dashboard({ user, setCurrentPage, triggerNotification }:
           {/* Notifications Card */}
           <div className="md:col-span-7 space-y-6">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <BellRing className="w-5 h-5 text-crimson-500" /> Urgently Pinned Shortages
+              <BellRing className="w-5 h-5 text-crimson-500" /> Urgent Shortages
             </h2>
             {data.notifications.map((n: any, idx: number) => (
               <div key={idx} className="bg-slate-900/60 p-6 rounded-2xl border border-crimson-900/20 space-y-4">
                 <div className="flex justify-between items-start">
-                  <span className="px-2.5 py-0.5 rounded bg-crimson-600/20 text-crimson-400 text-xxs font-bold border border-crimson-500/20">Urgents</span>
+                  <span className="px-2.5 py-0.5 rounded bg-crimson-600/20 text-crimson-400 text-xxs font-bold border border-crimson-500/20">Urgent</span>
                   <span className="text-xxs text-slate-500">Just Now</span>
                 </div>
                 <h3 className="text-base font-bold text-white">{n.title}</h3>
@@ -153,7 +153,7 @@ export default function Dashboard({ user, setCurrentPage, triggerNotification }:
         <header className="flex flex-col md:flex-row justify-between md:items-center pb-6 border-b border-slate-850 gap-4">
           <div>
             <h1 className="text-2xl font-bold text-white">Welcome back, {data.name}!</h1>
-            <p className="text-slate-400 text-sm">HemoCast AI monitors requests to prevent stock bottlenecks.</p>
+            <p className="text-slate-400 text-sm">HemoCast AI monitors your supply levels and alerts nearby banks to prevent shortages.</p>
           </div>
           <div className="flex gap-3">
             <button
@@ -289,7 +289,7 @@ export default function Dashboard({ user, setCurrentPage, triggerNotification }:
       <header className="flex justify-between items-center pb-6 border-b border-slate-850">
         <div>
           <h1 className="text-2xl font-bold text-white">{data.bank_name}</h1>
-          <p className="text-slate-400 text-sm">Predictive Inventory Management Control Center.</p>
+          <p className="text-slate-400 text-sm">AI-powered inventory management and demand forecasting hub.</p>
         </div>
         <button
           onClick={() => setCurrentPage('forecast')}
@@ -317,7 +317,7 @@ export default function Dashboard({ user, setCurrentPage, triggerNotification }:
           </div>
           <div>
             <span className="text-xxs font-bold uppercase tracking-wider text-slate-500">Shortages Prevented</span>
-            <p className="text-2xl font-extrabold text-white">{data.shortages_prevented} Times</p>
+            <p className="text-2xl font-extrabold text-white">{data.shortages_prevented}</p>
           </div>
         </div>
         <div className="glass-panel p-6 rounded-2xl border border-slate-850 flex items-center gap-4">
@@ -383,7 +383,7 @@ export default function Dashboard({ user, setCurrentPage, triggerNotification }:
                     <span className="text-white">{ind.component}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-slate-400 font-medium">Confidence:</span>
+                    <span className="text-slate-400 font-medium">Confidence</span>
                     <span className="text-emerald-400 font-bold">{ind.confidence}%</span>
                   </div>
                 </div>
@@ -416,7 +416,7 @@ export default function Dashboard({ user, setCurrentPage, triggerNotification }:
           {/* Expiry Suggestion Card */}
           <div className="space-y-4">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <Truck className="w-5 h-5 text-crimson-500" /> Expiry Redistribution建议
+              <Truck className="w-5 h-5 text-crimson-500" /> Expiry Redistribution Suggestions
             </h2>
             {data.transfer_suggestion ? (
               <div className="glass-panel p-6 rounded-2xl border border-slate-850 space-y-4">

@@ -15,7 +15,7 @@ export default function ChatbotWidget() {
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: 'bot',
-      text: "Hello! I am HemoCast AI's assistant. 🩸\n\nI can check live stock availability, upcoming demand forecasts, and expiry alerts directly from the database. Try asking me one of the options below!",
+      text: "Hello! I'm HemoCast AI's assistant. 🩸\n\nI can check live stock levels, upcoming demand forecasts, and expiry alerts directly from the database. Try one of the suggestions below!",
       timestamp: new Date()
     }
   ]);
@@ -127,7 +127,7 @@ export default function ChatbotWidget() {
                       : 'bg-slate-800/80 text-slate-200 border border-slate-700/60 rounded-tl-none'
                   }`}
                 >
-                  <p className="white-space-pre-wrap">{msg.text}</p>
+                  <p className="whitespace-pre-wrap">{msg.text}</p>
 
                   {/* Render Table/Data if available */}
                   {msg.data && msg.data.length > 0 && (
@@ -170,7 +170,7 @@ export default function ChatbotWidget() {
             {loading && (
               <div className="flex items-center gap-2 text-slate-400">
                 <Bot className="w-4 h-4 animate-bounce text-crimson-500" />
-                <span className="text-[10px] font-medium animate-pulse">Analyzing forecasting database...</span>
+                <span className="text-[10px] font-medium animate-pulse">Querying the database...</span>
               </div>
             )}
             <div ref={messagesEndRef} />

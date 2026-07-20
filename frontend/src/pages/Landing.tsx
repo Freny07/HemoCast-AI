@@ -56,7 +56,7 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
             </h1>
 
             <p className="text-slate-400 text-lg leading-relaxed max-w-xl">
-              HemoCast AI shifts blood management from reactive to predictive. By analyzing weather patterns, seasonal diseases, surgeries, and historical donations, we forecast demand and redirect surplus units before they expire.
+              HemoCast AI shifts blood management from reactive to predictive — analyzing weather patterns, seasonal disease trends, surgical schedules, and historical donations to forecast demand and redirect surplus units before they expire.
             </p>
 
             <div className="flex flex-wrap gap-3.5 pt-2">
@@ -119,7 +119,7 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
                 </div>
                 <div>
                   <div className="flex justify-between text-xs mb-1.5">
-                    <span className="font-semibold text-slate-200">O+ Whole Blood (Regular Surgery week)</span>
+                    <span className="font-semibold text-slate-200">O+ Whole Blood (Routine Surgery Week)</span>
                     <span className="text-slate-400">105% Predicted Demand</span>
                   </div>
                   <div className="w-full bg-slate-950 rounded-full h-2.5 border border-slate-800">
@@ -149,7 +149,7 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
             <h2 className="text-3xl font-extrabold text-white">Closing the Shortage Loop</h2>
-            <p className="text-slate-400">HemoCast AI runs a continuous predictive loop connecting blood banks, local hospitals, and registered donors.</p>
+            <p className="text-slate-400">HemoCast AI runs a continuous predictive cycle — connecting blood banks, hospitals, and registered donors to prevent shortages before they happen.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -159,7 +159,7 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
               </div>
               <h3 className="text-lg font-bold text-white mb-3">1. Predict Shortfalls</h3>
               <p className="text-slate-400 text-sm leading-relaxed">
-                The ML engine trains on historical donation records, weather indices, disease reports, and hospital calendars to forecast specific shortages 1-7 days in advance.
+                Our ML engine trains on historical donation records, weather indices, disease reports, and hospital surgical calendars to forecast specific blood shortages 1–7 days in advance.
               </p>
             </div>
 
@@ -169,7 +169,7 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
               </div>
               <h3 className="text-lg font-bold text-white mb-3">2. Auto-Notify Donors</h3>
               <p className="text-slate-400 text-sm leading-relaxed">
-                Instead of mass spam SMS, the algorithm ranks and contacts eligible, high-response donors based on their location, blood group suitability, and donation timelines.
+                Instead of generic mass SMS blasts, the algorithm ranks and contacts eligible, high-response donors based on their proximity, blood group suitability, and donation history — eliminating alert fatigue.
               </p>
             </div>
 
@@ -179,7 +179,7 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
               </div>
               <h3 className="text-lg font-bold text-white mb-3">3. Smart Redistribution</h3>
               <p className="text-slate-400 text-sm leading-relaxed">
-                Surfaced transfer alerts prompt blood bank directors to shift soon-to-expire units from surplus zones to high-need hospitals, preventing wastage.
+                AI-generated transfer alerts prompt blood bank directors to move soon-to-expire units from surplus zones to high-need hospitals, preventing wastage of critical blood products.
               </p>
             </div>
           </div>
@@ -216,6 +216,7 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
           <p>© 2026 HemoCast AI. Built for the ImpactForge Hackathon.</p>
           <div className="flex gap-6">
             <button onClick={() => setCurrentPage('map')} className="hover:text-slate-350 transition-colors">Coverage Map</button>
+            <button onClick={() => setCurrentPage('about')} className="hover:text-slate-350 transition-colors">Evaluation Hub</button>
           </div>
         </div>
       </footer>

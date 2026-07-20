@@ -32,6 +32,7 @@ export default function Sidebar({ currentPage, setCurrentPage, user, onLogout }:
     { id: 'targeting', label: 'Donor Targeting', icon: Users, roles: ['bank', 'admin'] },
     { id: 'hospital', label: 'Hospital Orders', icon: FileText, roles: ['hospital', 'bank', 'admin'] },
     { id: 'map', label: 'Interactive Map', icon: Map, roles: ['public', 'bank', 'hospital', 'donor', 'admin'] },
+    { id: 'about', label: 'Evaluation Hub', icon: Award, roles: ['public', 'bank', 'hospital', 'donor', 'admin'] },
   ];
 
   const filteredItems = menuItems.filter(item => item.roles.includes(role));
