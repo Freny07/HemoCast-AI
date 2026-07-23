@@ -12,7 +12,7 @@ import DonorTargeting from './pages/DonorTargeting';
 import HospitalRequest from './pages/HospitalRequest';
 import InteractiveMap from './pages/InteractiveMap';
 import AboutImpact from './pages/AboutImpact';
-
+import ColdChainTelemetry from './pages/ColdChainTelemetry';
 
 import { BellRing, X } from 'lucide-react';
 
@@ -75,6 +75,8 @@ export default function App() {
         return <Forecast />;
       case 'inventory':
         return <Inventory triggerNotification={triggerNotification} />;
+      case 'telemetry':
+        return <ColdChainTelemetry triggerNotification={triggerNotification} />;
       case 'targeting':
         return <DonorTargeting triggerNotification={triggerNotification} />;
       case 'hospital':

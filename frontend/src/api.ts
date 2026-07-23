@@ -559,5 +559,110 @@ export const api = {
       
       return { reply, intent };
     }
+  },
+
+  // Cold Chain Telemetry
+  async getTelemetryData(): Promise<any> {
+    try {
+      return await fetchJson(`${API_BASE}/telemetry/live`);
+    } catch {
+      return {
+        timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
+        overall_status: "warning",
+        active_units: 4,
+        breach_alerts_count: 1,
+        units: [
+          {
+            id: "UNIT-PRBC-01",
+            name: "Packed RBC Refrigerator #1",
+            type: "Packed Red Blood Cells",
+            target_temp: 4.0,
+            min_safe_temp: 2.0,
+            max_safe_temp: 6.0,
+            current_temp: 3.8,
+            humidity: 45.2,
+            compressor_load: 78,
+            door_status: "Closed (Sealed)",
+            status: "optimal",
+            location: "Cold Room A - Bay 1",
+            sensor_id: "DS18B20-A01"
+          },
+          {
+            id: "UNIT-FFP-02",
+            name: "Fresh Frozen Plasma Deep Freezer #1",
+            type: "Fresh Frozen Plasma (FFP)",
+            target_temp: -30.0,
+            min_safe_temp: -35.0,
+            max_safe_temp: -25.0,
+            current_temp: -28.5,
+            humidity: 38.0,
+            compressor_load: 84,
+            door_status: "Closed (Sealed)",
+            status: "optimal",
+            location: "Cryo Vault B - Bay 2",
+            sensor_id: "PT100-B02"
+          },
+          {
+            id: "UNIT-PLT-03",
+            name: "Platelet Agitated Incubator #1",
+            type: "Platelets & Concentrates",
+            target_temp: 22.0,
+            min_safe_temp: 20.0,
+            max_safe_temp: 24.0,
+            current_temp: 24.8,
+            humidity: 52.4,
+            compressor_load: 96,
+            door_status: "Ajar / Open (12 mins)",
+            status: "warning",
+            location: "Main Lab - Agitator Bench 3",
+            sensor_id: "SHT31-C03"
+          },
+          {
+            id: "UNIT-WB-04",
+            name: "Whole Blood Refrigerator #2",
+            type: "Whole Blood Inventory",
+            target_temp: 4.0,
+            min_safe_temp: 2.0,
+            max_safe_temp: 6.0,
+            current_temp: 4.2,
+            humidity: 46.0,
+            compressor_load: 72,
+            door_status: "Closed (Sealed)",
+            status: "optimal",
+            location: "Cold Room A - Bay 2",
+            sensor_id: "DS18B20-A04"
+          }
+        ],
+        history: Array.from({ length: 24 }).map((_, i) => ({
+          time: `${String(24 - i).padStart(2, '0')}:00`,
+          prbc_temp: Number((3.8 + (i % 2 === 0 ? 0.2 : -0.1)).toFixed(1)),
+          ffp_temp: Number((-28.5 + (i % 3 === 0 ? 0.3 : -0.2)).toFixed(1)),
+          platelet_temp: Number((22.1 + (i > 18 ? 1.8 : 0.2)).toFixed(1)),
+          humidity_percent: 45 + (i % 4),
+          power_draw_kw: 1.2
+        }))
+      };
+    }
+  },
+
+  async simulateTelemetryBreach(unit_id: string = "UNIT-PLT-03"): Promise<any> {
+    try {
+      return await fetchJson(`${API_BASE}/telemetry/simulate-breach?unit_id=${unit_id}`, { method: "POST" });
+    } catch {
+      return {
+        success: true,
+        alert: {
+          unit_id: unit_id,
+          unit_name: "Platelet Agitated Incubator #1",
+          severity: "CRITICAL",
+          breach_type: "HIGH_TEMPERATURE_EXCURSION",
+          current_temp: 25.4,
+          max_safe: 24.0,
+          timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
+          recommended_protocol: "Immediate transfer of 18 Platelet units to Secondary Backup Agitator B. Dispatch HVAC duty technician.",
+          sms_sent_to: "+15173993569 (Duty Officer Hotline)"
+        }
+      };
+    }
   }
 };

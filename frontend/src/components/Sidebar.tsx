@@ -11,7 +11,8 @@ import {
   Droplet,
   Globe,
   Settings,
-  ShieldAlert
+  ShieldAlert,
+  Thermometer
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -29,6 +30,7 @@ export default function Sidebar({ currentPage, setCurrentPage, user, onLogout }:
     { id: 'dashboard', label: 'Control Center', icon: LayoutDashboard, roles: ['bank', 'hospital', 'donor', 'admin'] },
     { id: 'forecast', label: 'AI Forecasts', icon: LineChart, roles: ['bank', 'admin'] },
     { id: 'inventory', label: 'Inventory Stock', icon: Layers, roles: ['bank', 'admin'] },
+    { id: 'telemetry', label: 'Cold Chain IoT', icon: Thermometer, roles: ['bank', 'hospital', 'admin'] },
     { id: 'targeting', label: 'Donor Targeting', icon: Users, roles: ['bank', 'admin'] },
     { id: 'hospital', label: 'Hospital Orders', icon: FileText, roles: ['hospital', 'bank', 'admin'] },
     { id: 'map', label: 'Interactive Map', icon: Map, roles: ['public', 'bank', 'hospital', 'donor', 'admin'] },
@@ -89,20 +91,20 @@ export default function Sidebar({ currentPage, setCurrentPage, user, onLogout }:
               </div>
             </div>
             
-            <button 
+            <button
               onClick={onLogout}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 hover:border-crimson-200 hover:bg-crimson-50 text-slate-600 hover:text-crimson-700 text-xs font-bold transition-all duration-200"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors"
             >
               <LogOut className="w-4 h-4" />
               Sign Out
             </button>
           </div>
         ) : (
-          <button 
+          <button
             onClick={() => setCurrentPage('login')}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-crimson-600 text-white font-bold text-xs shadow-md shadow-crimson-600/20 hover:bg-crimson-700 transition-all"
+            className="w-full py-3 bg-crimson-600 hover:bg-crimson-700 text-white rounded-xl text-xs font-bold shadow-md shadow-crimson-600/20 transition-all"
           >
-            Portal Sign In
+            Staff & Donor Login
           </button>
         )}
       </div>
