@@ -114,17 +114,17 @@ export default function InteractiveMap() {
   };
 
   return (
-    <div className="p-8 space-y-8 max-w-6xl mx-auto font-sans">
-      <header className="flex justify-between items-center pb-6 border-b border-slate-850">
+    <div className="p-8 space-y-8 max-w-6xl mx-auto font-sans bg-slate-50 min-h-screen">
+      <header className="flex justify-between items-center pb-6 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-white">Coverage & Active Drive Map</h1>
-          <p className="text-slate-450 text-sm mt-1">
-            Real OpenStreetMap spatial coordinates of partner hospitals, paged blood banks, and active donation drives.
+          <h1 className="text-2xl font-bold text-slate-900">Regional Coverage & GIS Transfusion Grid</h1>
+          <p className="text-slate-600 text-sm mt-1">
+            Real-time spatial mapping of partner blood centers, trauma hospitals, and active mobile donation drives across Bhavnagar District.
           </p>
         </div>
         
         {/* Toggle Filters */}
-        <div className="bg-slate-950 p-1 rounded-xl border border-slate-850 flex gap-1">
+        <div className="bg-white p-1 rounded-xl border border-slate-200 shadow-sm flex gap-1">
           {[
             { id: 'all', label: 'Show All' },
             { id: 'bank', label: 'Blood Banks' },
@@ -134,10 +134,10 @@ export default function InteractiveMap() {
             <button
               key={item.id}
               onClick={() => setFilter(item.id as any)}
-              className={`px-3 py-1.5 rounded-lg text-xxs font-bold uppercase tracking-wider transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
                 filter === item.id 
-                  ? 'bg-slate-800 text-white border border-slate-700/60 shadow-sm' 
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-crimson-600 text-white shadow-sm' 
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
               {item.label}
@@ -150,10 +150,10 @@ export default function InteractiveMap() {
         
         {/* Leaflet Real Interactive OpenStreetMap */}
         <div className="md:col-span-8">
-          <div className="glass-panel rounded-3xl border border-slate-850 overflow-hidden relative bg-[#090f1a] shadow-2xl h-[450px] z-10">
+          <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden relative shadow-md h-[450px] z-10">
             {/* Map Watermark Header */}
-            <div className="absolute top-4 left-4 text-xxs font-bold text-slate-300 bg-slate-950/80 border border-slate-800 px-3 py-1.5 rounded-lg z-[1000] backdrop-blur-md select-none flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <div className="absolute top-4 left-4 text-xs font-bold text-slate-800 bg-white/95 border border-slate-200 px-3 py-1.5 rounded-lg z-[1000] shadow-sm backdrop-blur-md select-none flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               LIVE OPENSTREETMAP GRID (BHAVNAGAR DISTRICT)
             </div>
 
@@ -176,7 +176,7 @@ export default function InteractiveMap() {
                     [21.7645, 72.1519],
                     [selectedLoc.latitude, selectedLoc.longitude]
                   ]}
-                  pathOptions={{ color: '#ef4444', weight: 2.5, dashArray: '6, 8', opacity: 0.8 }}
+                  pathOptions={{ color: '#dc2626', weight: 2.5, dashArray: '6, 8', opacity: 0.8 }}
                 />
               )}
 
@@ -194,7 +194,7 @@ export default function InteractiveMap() {
                     <div className="p-1 font-sans">
                       <strong className="text-sm block font-bold text-slate-900">{loc.name}</strong>
                       <span className="text-xs text-slate-600 block mt-0.5">{loc.address}</span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-red-600 mt-1 block">{loc.type} portal</span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-crimson-600 mt-1 block">{loc.type} portal</span>
                     </div>
                   </Popup>
                 </Marker>
@@ -205,52 +205,52 @@ export default function InteractiveMap() {
 
         {/* Sidebar details card */}
         <div className="md:col-span-4 space-y-4">
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
-            <Map className="w-5 h-5 text-crimson-500" /> Location Registry
+          <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+            <Map className="w-5 h-5 text-crimson-600" /> Location Registry
           </h2>
 
           {selectedLoc ? (
-            <div className="glass-panel p-6 rounded-3xl border border-slate-850 space-y-6 animate-in fade-in duration-200">
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-6 animate-in fade-in duration-200">
               <div className="space-y-3">
                 <div className="flex items-center gap-2.5">
-                  <span className={`w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center ${getIconColor(selectedLoc.type)}`}>
+                  <span className={`w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center ${getIconColor(selectedLoc.type)}`}>
                     {selectedLoc.type === 'bank' ? <Building className="w-4 h-4" /> : 
                      selectedLoc.type === 'hospital' ? <Hospital className="w-4 h-4" /> : 
                      <Calendar className="w-4 h-4" />}
                   </span>
                   <div>
-                    <h3 className="font-bold text-sm text-white">{selectedLoc.name}</h3>
-                    <span className="text-[10px] text-slate-500 font-semibold tracking-wider uppercase">{selectedLoc.type} portal</span>
+                    <h3 className="font-bold text-sm text-slate-900">{selectedLoc.name}</h3>
+                    <span className="text-[10px] text-slate-500 font-bold tracking-wider uppercase">{selectedLoc.type} portal</span>
                   </div>
                 </div>
 
-                <div className="space-y-2.5 text-xs text-slate-350 leading-relaxed pt-2">
-                  <p><strong>Address:</strong> {selectedLoc.address}</p>
-                  <p><strong>Coordinates:</strong> {selectedLoc.latitude}° N, {selectedLoc.longitude}° E</p>
-                  <p><strong>Description:</strong> {selectedLoc.details}</p>
+                <div className="space-y-2 text-xs text-slate-600 leading-relaxed pt-2">
+                  <p><strong className="text-slate-900">Address:</strong> {selectedLoc.address}</p>
+                  <p><strong className="text-slate-900">Coordinates:</strong> {selectedLoc.latitude}° N, {selectedLoc.longitude}° E</p>
+                  <p><strong className="text-slate-900">Description:</strong> {selectedLoc.details}</p>
                 </div>
               </div>
 
               {/* Predictive Statistics Panel */}
-              <div className="bg-slate-900/60 p-4.5 rounded-2xl border border-slate-800 space-y-2">
-                <span className="flex items-center gap-1.5 text-xxs font-bold text-crimson-400 tracking-wider uppercase">
+              <div className="bg-crimson-50/60 p-4 rounded-2xl border border-crimson-100 space-y-2">
+                <span className="flex items-center gap-1.5 text-xxs font-bold text-crimson-700 tracking-wider uppercase">
                   <Sparkles className="w-3.5 h-3.5 animate-pulse" /> Live Status Indicators
                 </span>
-                <p className="text-xs text-white leading-relaxed font-semibold">
+                <p className="text-xs text-slate-800 leading-relaxed font-bold">
                   {selectedLoc.stats}
                 </p>
               </div>
 
               <button
                 onClick={() => setSelectedLoc(null)}
-                className="w-full py-2.5 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-xs font-semibold"
+                className="w-full py-2.5 border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl text-xs font-bold transition-all"
               >
                 Clear Selection
               </button>
             </div>
           ) : (
-            <div className="glass-panel p-8 rounded-3xl border border-slate-850 text-center text-slate-500 text-xs py-20 flex flex-col items-center justify-center gap-3">
-              <MapPin className="w-8 h-8 text-slate-700 animate-bounce" />
+            <div className="bg-white p-8 rounded-3xl border border-slate-200 text-center text-slate-500 text-xs py-20 flex flex-col items-center justify-center gap-3 shadow-sm">
+              <MapPin className="w-8 h-8 text-crimson-500 animate-bounce" />
               <p>Select any marker on the OpenStreetMap canvas to inspect live spatial coordinates and stock details.</p>
             </div>
           )}
@@ -259,63 +259,63 @@ export default function InteractiveMap() {
       </div>
 
       {/* Network Blood Bank Operational Directory Section */}
-      <section className="space-y-6 pt-6 border-t border-slate-850">
+      <section className="space-y-6 pt-6 border-t border-slate-200">
         <div>
-          <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
-            <Building className="w-5 h-5 text-crimson-500" /> Regional Blood Bank Network Directory
+          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <Building className="w-5 h-5 text-crimson-600" /> Regional Blood Bank Network Directory
           </h2>
-          <p className="text-slate-400 text-xs mt-1">
-            Operational capabilities, cold chain storage specifications, and 24/7 emergency dispatch helplines for partner blood centers.
+          <p className="text-slate-600 text-xs mt-1">
+            Official licenses, cold chain storage specifications, and 24/7 emergency dispatch helplines for partner blood centers.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="glass-panel p-6 rounded-2xl border border-slate-850 space-y-4">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <div className="flex justify-between items-start">
               <div>
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">License: NBTC-GJ-2024-8891</span>
-                <h3 className="font-extrabold text-base text-white mt-0.5">Bhavnagar District Blood Bank</h3>
-                <p className="text-xs text-slate-400">Central Transfusion & Forecasting Hub</p>
+                <h3 className="font-bold text-base text-slate-900 mt-0.5">Bhavnagar District Blood Bank</h3>
+                <p className="text-xs text-slate-500">Central Transfusion & Forecasting Hub</p>
               </div>
-              <span className="px-2.5 py-1 rounded-full bg-emerald-950/40 border border-emerald-900/30 text-emerald-400 text-[10px] font-bold">24/7 Active</span>
+              <span className="px-2.5 py-1 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-800 text-[10px] font-bold">24/7 Active</span>
             </div>
 
-            <div className="space-y-2 text-xs text-slate-350 border-t border-slate-850 pt-3">
-              <p><strong>Emergency Dispatch Hotline:</strong> <a href="tel:+912782429000" className="text-crimson-400 hover:underline">+91 (278) 242-9000</a> / 1800-425-BLOOD</p>
-              <p><strong>Address:</strong> M.G. Road, Near Sir T. Hospital, Bhavnagar 364001</p>
-              <p><strong>Medical Director:</strong> Dr. Rajesh Varma (MD Transfusion Medicine)</p>
-              <p><strong>Cold Storage Equipment:</strong> -30°C Deep Freezers, 4°C Blood Storage Refrigerators, 22°C Agitated Incubators</p>
+            <div className="space-y-2 text-xs text-slate-700 border-t border-slate-100 pt-3">
+              <p><strong className="text-slate-900">Emergency Hotline:</strong> <a href="tel:+912782429000" className="text-crimson-600 font-bold hover:underline">+91 (278) 242-9000</a> / 1800-425-BLOOD</p>
+              <p><strong className="text-slate-900">Address:</strong> M.G. Road, Near Sir T. Hospital, Bhavnagar 364001</p>
+              <p><strong className="text-slate-900">Medical Director:</strong> Dr. Rajesh Varma (MD Transfusion Medicine)</p>
+              <p><strong className="text-slate-900">Cold Chain Storage:</strong> -30°C Deep Freezers, 4°C Refrigerators, 22°C Agitated Incubators</p>
             </div>
 
             <div className="flex flex-wrap gap-1.5 pt-1">
               {["Whole Blood", "PRBC", "Agitated Platelets", "FFP", "Cryoprecipitate"].map((cap, i) => (
-                <span key={i} className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] font-semibold text-slate-300">
+                <span key={i} className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-[10px] font-bold text-slate-700">
                   {cap}
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="glass-panel p-6 rounded-2xl border border-slate-850 space-y-4">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <div className="flex justify-between items-start">
               <div>
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">License: IRCS-GJ-2023-4102</span>
-                <h3 className="font-extrabold text-base text-white mt-0.5">Red Cross Regional Blood Center</h3>
-                <p className="text-xs text-slate-400">Industrial Zone Secondary Storage</p>
+                <h3 className="font-bold text-base text-slate-900 mt-0.5">Red Cross Regional Blood Center</h3>
+                <p className="text-xs text-slate-500">Industrial Zone Secondary Storage</p>
               </div>
-              <span className="px-2.5 py-1 rounded-full bg-emerald-950/40 border border-emerald-900/30 text-emerald-400 text-[10px] font-bold">Dispatch Active</span>
+              <span className="px-2.5 py-1 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-800 text-[10px] font-bold">Dispatch Active</span>
             </div>
 
-            <div className="space-y-2 text-xs text-slate-350 border-t border-slate-850 pt-3">
-              <p><strong>Emergency Dispatch Hotline:</strong> <a href="tel:+912782514433" className="text-crimson-400 hover:underline">+91 (278) 251-4433</a></p>
-              <p><strong>Address:</strong> Chitra GIDC Industrial Zone, Bhavnagar 364004</p>
-              <p><strong>Medical Director:</strong> Dr. Meera Patel</p>
-              <p><strong>Cold Storage Equipment:</strong> Dual Refrigerated Centrifuges, Component Separator Units</p>
+            <div className="space-y-2 text-xs text-slate-700 border-t border-slate-100 pt-3">
+              <p><strong className="text-slate-900">Emergency Hotline:</strong> <a href="tel:+912782514433" className="text-crimson-600 font-bold hover:underline">+91 (278) 251-4433</a></p>
+              <p><strong className="text-slate-900">Address:</strong> Chitra GIDC Industrial Zone, Bhavnagar 364004</p>
+              <p><strong className="text-slate-900">Medical Director:</strong> Dr. Meera Patel</p>
+              <p><strong className="text-slate-900">Cold Chain Storage:</strong> Dual Refrigerated Centrifuges, Component Separators</p>
             </div>
 
             <div className="flex flex-wrap gap-1.5 pt-1">
               {["Whole Blood", "PRBC", "Platelet Concentrates", "FFP"].map((cap, i) => (
-                <span key={i} className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] font-semibold text-slate-300">
+                <span key={i} className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-[10px] font-bold text-slate-700">
                   {cap}
                 </span>
               ))}

@@ -92,20 +92,20 @@ export default function App() {
   const hasSidebar = user && !['landing', 'login'].includes(currentPage);
 
   return (
-    <div className="min-h-screen bg-[#070b13] text-slate-100 font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
       {/* Toast Notification slide-in banner */}
       {toast && (
-        <div className="fixed top-6 right-6 z-50 w-80 bg-slate-900/95 border border-slate-800 rounded-2xl p-4 shadow-2xl flex gap-3 animate-in slide-in-from-right-6 duration-300">
-          <div className="w-8 h-8 rounded-lg bg-crimson-600/10 flex items-center justify-center border border-crimson-600/30 text-crimson-500 shrink-0">
+        <div className="fixed top-6 right-6 z-50 w-80 bg-white border border-slate-200 rounded-2xl p-4 shadow-xl flex gap-3 animate-in slide-in-from-right-6 duration-300">
+          <div className="w-8 h-8 rounded-lg bg-crimson-50 flex items-center justify-center border border-crimson-200 text-crimson-600 shrink-0">
             <BellRing className="w-4 h-4 animate-bounce" />
           </div>
           <div className="flex-1 min-w-0">
-            <h4 className="text-xs font-bold text-white leading-none">{toast.title}</h4>
-            <p className="text-[10px] text-slate-450 mt-1.5 leading-relaxed">{toast.message}</p>
+            <h4 className="text-xs font-bold text-slate-900 leading-none">{toast.title}</h4>
+            <p className="text-xs text-slate-600 mt-1.5 leading-relaxed font-medium">{toast.message}</p>
           </div>
           <button 
             onClick={() => setToast(null)}
-            className="text-slate-500 hover:text-slate-350 shrink-0"
+            className="text-slate-400 hover:text-slate-700 shrink-0"
           >
             <X className="w-4 h-4" />
           </button>
@@ -123,7 +123,7 @@ export default function App() {
       )}
 
       {/* Main Content Area Container */}
-      <div className={`flex-1 flex flex-col ${hasSidebar ? 'pl-64' : ''}`}>
+      <div className={`flex-1 flex flex-col min-h-screen bg-slate-50 ${hasSidebar ? 'pl-64' : ''}`}>
         {renderPage()}
       </div>
 

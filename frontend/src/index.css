@@ -6,60 +6,80 @@
   --color-crimson-200: #fecdd3;
   --color-crimson-300: #fda4af;
   --color-crimson-400: #fb7185;
-  --color-crimson-500: #f43f5e; /* Vibrant Neon Rose-Red */
-  --color-crimson-600: #e11d48; /* Premium Rose-Crimson */
-  --color-crimson-700: #be123c; /* Deep Ruby Red */
+  --color-crimson-500: #f43f5e; /* Vibrant Crimson Rose */
+  --color-crimson-600: #e11d48; /* Deep Medical Crimson */
+  --color-crimson-700: #be123c; /* Clinical Ruby Red */
   --color-crimson-800: #9f1239;
   --color-crimson-900: #881337;
   
-  --color-slate-950: #030712;
-  --color-slate-900: #070d1e; /* Deep Midnight Navy */
-  --color-slate-800: #0f1a36; /* Midnight Slate Card */
-  --color-slate-700: #1d2c54; /* Border Navy */
-  --color-slate-600: #3b4e7a;
+  --color-slate-950: #0f172a;
+  --color-slate-900: #1e293b;
+  --color-slate-800: #334155;
+  --color-slate-700: #475569;
+  --color-slate-600: #64748b;
+  --color-slate-500: #94a3b8;
+  --color-slate-400: #cbd5e1;
+  --color-slate-300: #e2e8f0;
+  --color-slate-200: #f1f5f9;
+  --color-slate-100: #f8fafc;
   
   --color-emerald-500: #10b981;
   --color-amber-500: #f59e0b;
 }
 
-/* Custom styles and scrollbars for a premium dark mode feel */
+/* Pristine Clinical Light Theme for Medical Organizations */
 body {
-  background-color: #040813; /* Elegant Midnight Obsidian */
-  color: #f1f5f9;
+  background-color: #f8fafc; /* Crisp Clinical Medical Porcelain */
+  color: #0f172a;
   font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
 }
 
-/* Custom scrollbar */
+/* Custom light scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ef4444;
+  background: #e11d48;
 }
 
-/* Glassmorphism utility */
+/* Medical White Glassmorphism utility */
 .glass-panel {
-  background: rgba(30, 41, 59, 0.4);
+  background: #ffffff;
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -2px rgba(225, 29, 72, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
 }
 
 .glass-panel-heavy {
-  background: rgba(15, 23, 42, 0.85);
+  background: #ffffff;
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid #ffe4e6;
+  box-shadow: 0 10px 30px -4px rgba(225, 29, 72, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Leaflet Popup Light Theme Fix */
+.leaflet-dark-popup .leaflet-popup-content-wrapper {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-dark-popup .leaflet-popup-tip {
+  background: #ffffff !important;
 }
 
 /* Animation utilities */

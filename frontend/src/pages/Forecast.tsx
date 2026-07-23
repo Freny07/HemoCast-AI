@@ -37,24 +37,24 @@ export default function Forecast() {
   const components = ["Whole Blood", "Packed RBC", "Platelets", "FFP"];
 
   return (
-    <div className="p-8 space-y-8 max-w-6xl mx-auto font-sans">
+    <div className="p-8 space-y-8 max-w-6xl mx-auto font-sans bg-slate-50 min-h-screen">
       <header>
-        <h1 className="text-2xl font-bold text-white">AI Forecasting & Long-Horizon Planning</h1>
-        <p className="text-slate-450 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-slate-900">AI Forecasting & Long-Horizon Planning</h1>
+        <p className="text-slate-600 text-sm mt-1">
           ML-driven demand forecasting using scikit-learn models trained on climate data, disease surveillance, and scheduled surgical calendars.
         </p>
       </header>
 
       {/* Filter Toolbar */}
-      <div className="glass-panel p-5 rounded-2xl border border-slate-850 flex flex-wrap gap-6 items-center justify-between">
+      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-6 items-center justify-between">
         <div className="flex flex-wrap gap-4">
           {/* Blood Group Select */}
           <div className="space-y-1.5">
-            <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">Blood Group</label>
+            <label className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider">Blood Group</label>
             <select
               value={bloodGroup}
               onChange={e => setBloodGroup(e.target.value)}
-              className="bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-crimson-500"
+              className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm text-slate-900 focus:outline-none focus:border-crimson-600 font-bold"
             >
               {bloodGroups.map(bg => (
                 <option key={bg} value={bg}>{bg}</option>
@@ -64,11 +64,11 @@ export default function Forecast() {
 
           {/* Component Select */}
           <div className="space-y-1.5">
-            <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">Component Type</label>
+            <label className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider">Component Type</label>
             <select
               value={component}
               onChange={e => setComponent(e.target.value)}
-              className="bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-crimson-500"
+              className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm text-slate-900 focus:outline-none focus:border-crimson-600 font-bold"
             >
               {components.map(comp => (
                 <option key={comp} value={comp}>{comp}</option>
@@ -79,16 +79,16 @@ export default function Forecast() {
 
         {/* Granularity Toggle */}
         <div className="space-y-1.5">
-          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider text-right md:text-left">Time Granularity</label>
-          <div className="bg-slate-950 p-1.5 rounded-xl border border-slate-850 flex gap-1">
+          <label className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider text-right md:text-left">Time Granularity</label>
+          <div className="bg-slate-100 p-1.5 rounded-xl border border-slate-200 flex gap-1">
             {["daily", "weekly", "monthly"].map(g => (
               <button
                 key={g}
                 onClick={() => setGranularity(g)}
-                className={`px-4 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
+                className={`px-4 py-1.5 rounded-lg text-xs font-bold capitalize transition-all ${
                   granularity === g 
                     ? 'bg-crimson-600 text-white shadow-sm' 
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 {g}
@@ -101,8 +101,8 @@ export default function Forecast() {
       {loading ? (
         <div className="h-96 flex items-center justify-center">
           <div className="text-center space-y-4">
-            <div className="w-10 h-10 rounded-full border-4 border-t-crimson-600 border-slate-800 animate-spin mx-auto"></div>
-            <p className="text-slate-500 text-xs font-semibold">Fitting regression lines...</p>
+            <div className="w-10 h-10 rounded-full border-4 border-t-crimson-600 border-slate-200 animate-spin mx-auto"></div>
+            <p className="text-slate-600 text-xs font-bold">Fitting regression lines...</p>
           </div>
         </div>
       ) : forecastData ? (
@@ -110,15 +110,15 @@ export default function Forecast() {
           
           {/* Chart Panel */}
           <div className="md:col-span-8 space-y-6">
-            <div className="glass-panel p-6 rounded-3xl border border-slate-850 relative">
-              <div className="flex justify-between items-center pb-4 border-b border-slate-850 mb-6">
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-md relative">
+              <div className="flex justify-between items-center pb-4 border-b border-slate-100 mb-6">
                 <div>
                   <span className="text-xxs font-bold text-slate-500 uppercase tracking-wider">Demand Curve</span>
-                  <h3 className="text-base font-bold text-white">
-                    Predicted Total: <span className="text-crimson-500">{forecastData.total_predicted} Units</span>
+                  <h3 className="text-base font-bold text-slate-900">
+                    Predicted Total: <span className="text-crimson-600">{forecastData.total_predicted} Units</span>
                   </h3>
                 </div>
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-crimson-950/20 text-crimson-400 border border-crimson-900/10 text-xs font-bold">
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-crimson-50 text-crimson-700 border border-crimson-200 text-xs font-bold">
                   <TrendingUp className="w-4 h-4" />
                   {forecastData.change_vs_average_percent >= 0 ? '+' : ''}{forecastData.change_vs_average_percent}% vs Average
                 </div>
@@ -130,14 +130,15 @@ export default function Forecast() {
                   <AreaChart data={forecastData.forecast} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                     <defs>
                       <linearGradient id="colorForecast" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#ef4444" stopOpacity={0.25}/>
-                        <stop offset="95%" stopColor="#ef4444" stopOpacity={0.0}/>
+                        <stop offset="5%" stopColor="#dc2626" stopOpacity={0.25}/>
+                        <stop offset="95%" stopColor="#dc2626" stopOpacity={0.0}/>
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" opacity={0.4} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.8} />
                     <XAxis 
                       dataKey="date" 
-                      stroke="#475569" 
+                      stroke="#64748b" 
+                      tick={{ fill: '#475569', fontWeight: '600' }}
                       tickFormatter={(dateStr) => {
                         const dateObj = new Date(dateStr);
                         if (granularity === 'daily') return dateObj.toLocaleDateString([], { weekday: 'short' });
@@ -145,11 +146,11 @@ export default function Forecast() {
                         return dateObj.toLocaleDateString([], { month: 'short' });
                       }}
                     />
-                    <YAxis stroke="#475569" />
+                    <YAxis stroke="#64748b" tick={{ fill: '#475569', fontWeight: '600' }} />
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px' }}
-                      labelStyle={{ color: '#94a3b8', fontWeight: 'bold' }}
-                      itemStyle={{ color: '#fff' }}
+                      contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '12px', boxShadow: '0 4px 20px -2px rgba(0,0,0,0.1)' }}
+                      labelStyle={{ color: '#0f172a', fontWeight: 'bold' }}
+                      itemStyle={{ color: '#dc2626', fontWeight: 'bold' }}
                       formatter={(value: any, name: any) => {
                         if (name === 'confidence_upper') return [value, 'Max Bound'];
                         if (name === 'confidence_lower') return [value, 'Min Bound'];
@@ -162,14 +163,14 @@ export default function Forecast() {
                       type="monotone" 
                       dataKey="confidence_upper" 
                       stroke="transparent" 
-                      fill="#334155" 
-                      fillOpacity={0.15} 
+                      fill="#cbd5e1" 
+                      fillOpacity={0.3} 
                     />
                     <Area 
                       type="monotone" 
                       dataKey="confidence_lower" 
                       stroke="transparent" 
-                      fill="#0b0f19" 
+                      fill="#ffffff" 
                       fillOpacity={1.0} // Mask bottom out
                     />
 
@@ -177,7 +178,7 @@ export default function Forecast() {
                     <Area 
                       type="monotone" 
                       dataKey="predicted_demand" 
-                      stroke="#ef4444" 
+                      stroke="#dc2626" 
                       strokeWidth={3}
                       fill="url(#colorForecast)" 
                     />
@@ -186,23 +187,23 @@ export default function Forecast() {
               </div>
 
               {/* Confidence Band Legend */}
-              <div className="flex justify-center gap-6 mt-4 text-[10px] text-slate-500 font-medium">
+              <div className="flex justify-center gap-6 mt-4 text-xs text-slate-600 font-bold">
                 <span className="flex items-center gap-1.5">
-                  <span className="w-4 h-1 bg-crimson-500 rounded"></span> ML Predicted Target
+                  <span className="w-4 h-1 bg-crimson-600 rounded"></span> ML Predicted Target
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="w-4 h-3 bg-slate-800/80 border border-slate-700/60 rounded"></span> 95% Confidence Interval Band
+                  <span className="w-4 h-3 bg-slate-200 border border-slate-300 rounded"></span> 95% Confidence Interval Band
                 </span>
               </div>
             </div>
             
             {/* High-Need Month Flag for Monthly View */}
             {granularity === 'monthly' && forecastData.change_vs_average_percent > 10 && (
-              <div className="bg-amber-950/20 border border-amber-900/30 rounded-2xl p-5 flex gap-3.5 items-start">
-                <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex gap-3.5 items-start shadow-xs">
+                <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                 <div className="space-y-1">
-                  <h4 className="text-xs font-bold text-white">HIGH-NEED MONTH FLAG DETECTED</h4>
-                  <p className="text-xxs text-slate-400 leading-relaxed">
+                  <h4 className="text-xs font-bold text-slate-900">HIGH-NEED MONTH FLAG DETECTED</h4>
+                  <p className="text-xs text-slate-700 leading-relaxed">
                     Aggregate predictions for this period exceed historical averages by over 10%. Consider initiating early donation drive procurement at Alang Port and local universities — approximately {forecastData.change_vs_average_percent}% ahead of schedule.
                   </p>
                 </div>
@@ -212,36 +213,36 @@ export default function Forecast() {
 
           {/* Explainable AI Panel */}
           <div className="md:col-span-4 space-y-6">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <Bot className="w-5 h-5 text-crimson-500" /> Explainable AI Panel
+            <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <Bot className="w-5 h-5 text-crimson-600" /> Explainable AI Panel
             </h2>
 
-            <div className="glass-panel p-6 rounded-3xl border border-slate-850 space-y-6">
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-6">
               
               {/* Attribution Factors */}
               <div className="space-y-4">
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Contributing Features</span>
                 {forecastData.drivers.map((d: any, idx: number) => (
-                  <div key={idx} className="bg-slate-900/50 p-4 rounded-xl border border-slate-800 space-y-1">
+                  <div key={idx} className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
                     <div className="flex justify-between items-center text-xs font-bold">
-                      <span className="text-white">{d.factor}</span>
-                      <span className={d.impact.includes('-') ? 'text-emerald-450' : 'text-crimson-400'}>
+                      <span className="text-slate-900">{d.factor}</span>
+                      <span className={d.impact.includes('-') ? 'text-emerald-700 font-extrabold' : 'text-crimson-700 font-extrabold'}>
                         {d.impact}
                       </span>
                     </div>
-                    <p className="text-[10px] text-slate-400 leading-relaxed">{d.description}</p>
+                    <p className="text-xs text-slate-600 leading-relaxed font-medium">{d.description}</p>
                   </div>
                 ))}
               </div>
 
               {/* Recommended Actions */}
-              <div className="pt-4 border-t border-slate-850/60 space-y-3">
+              <div className="pt-4 border-t border-slate-100 space-y-3">
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Recommended Action</span>
-                <div className="bg-crimson-950/20 border border-crimson-900/25 p-4 rounded-xl space-y-2">
-                  <span className="flex items-center gap-1.5 text-xxs font-bold text-crimson-400">
+                <div className="bg-crimson-50 border border-crimson-200 p-4 rounded-xl space-y-2">
+                  <span className="flex items-center gap-1.5 text-xxs font-bold text-crimson-800">
                     <Sparkles className="w-3.5 h-3.5 animate-pulse" /> PRE-POSITION STRATEGY
                   </span>
-                  <p className="text-xs text-white leading-relaxed font-semibold">
+                  <p className="text-xs text-slate-900 leading-relaxed font-bold">
                     {forecastData.recommended_action}
                   </p>
                 </div>
@@ -252,7 +253,7 @@ export default function Forecast() {
 
         </div>
       ) : (
-        <div className="text-slate-400">Error rendering forecasting data.</div>
+        <div className="text-slate-600 font-bold">Error rendering forecasting data.</div>
       )}
     </div>
   );
