@@ -1,7 +1,6 @@
 # 🩸 HemoCast AI
 
-> **AI-Powered Blood Forecasting to Prevent Critical Shortages.**
-> Built for the **ImpactForge Hackathon** (July 2026).
+> **AI-Powered Blood Supply Forecasting & Emergency Management Network.**
 
 HemoCast AI shifts blood banking operations from reactive tracking to proactive, predictive procurement. By forecasting regional deficits 1–7 days in advance, the system enables blood bank directors and hospitals to pre-position resources, minimize wastage of short-shelf-life products like platelets, and recruit donors with precision — eliminating alert fatigue.
 
@@ -36,7 +35,7 @@ HemoCast AI shifts blood banking operations from reactive tracking to proactive,
 
 ## 📊 Machine Learning Model
 
-The prediction engine trains on 365 days of seeded historical data per district, using:
+The prediction engine trains on historical data per district, using:
 
 | Feature | Description |
 |---|---|
@@ -73,7 +72,7 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Seed the database with 1 year of historical data and demo accounts
+# Seed the database with initial historical data and accounts
 python seed.py
 
 # Start the FastAPI server at http://localhost:8000
@@ -90,9 +89,9 @@ npm run dev
 # Runs at http://localhost:5173
 ```
 
-### Demo Accounts
+### 🔑 Pre-Configured System Accounts
 
-Use the **Quick Login** buttons on the Sign In page to instantly access any portal:
+Use the **Quick Access** portal switcher on the Sign In page or sign in directly with the following credentials:
 
 | Role | Username | Password |
 |---|---|---|
@@ -103,18 +102,19 @@ Use the **Quick Login** buttons on the Sign In page to instantly access any port
 
 ---
 
-## 🏆 Hackathon Evaluation Alignment
+## 🏛️ System Architecture Overview
 
-Visit the **Evaluation Hub** in the app sidebar to see how HemoCast AI maps to ImpactForge rubrics:
+Visit the **Platform Architecture** tab in the app sidebar for an architectural deep dive into HemoCast AI:
 
-| Criterion | Weight | HemoCast Approach |
-|---|---|---|
-| Build Quality | 30% | Full-stack TypeScript + FastAPI, clean SQLite schema, Random Forest regression |
-| Real-World Impact | 25% | Proactive stock management, platelet wastage prevention, SMS fallback |
-| Creativity & Approach | 20% | Explainable AI panels replacing black-box forecasts |
-| User Experience | 15% | Role-specific portals for Donors, Doctors, and Bank Staff |
-| Clarity of Submission | 10% | Fully seeded sandbox for seamless judge evaluation |
+| Component | Technical Implementation |
+|---|---|
+| Predictive Engine | FastAPI + Scikit-Learn Random Forest Regressor |
+| Emergency SOS | Real-time spatial donor matching & multi-bank paging |
+| Model Transparency | Explainable AI (XAI) feature attribution panels |
+| User Interface | Role-customized dashboards for Donors, Doctors, & Blood Bank Staff |
+| Storage & Schema | SQLite + SQLAlchemy relational ORM mapping |
 
 ---
 
 *HemoCast AI — Securing tomorrow's blood supply, one prediction at a time.*
+

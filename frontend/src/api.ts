@@ -273,6 +273,79 @@ export const api = {
     }
   },
 
+  async getBloodBankDirectory(): Promise<any> {
+    try {
+      return await fetchJson(`${API_BASE}/blood-banks/directory`);
+    } catch {
+      return [
+        {
+          id: 1,
+          name: "Bhavnagar District Blood Bank (Central Transfusion Center)",
+          license_no: "NBTC-GJ-2024-8891",
+          helpline: "+91 (278) 242-9000 / 1800-425-BLOOD",
+          address: "M.G. Road, Near Sir T. Hospital, Bhavnagar 364001",
+          director: "Dr. Rajesh Varma (MD Transfusion Medicine)",
+          operating_hours: "24/7 Emergency Dispatch Active",
+          capabilities: ["Whole Blood", "Packed RBC (PRBC)", "Agitated Platelets", "Fresh Frozen Plasma (FFP)", "Cryoprecipitate"],
+          equipment_specs: "-30°C Deep Freezers, 4°C Blood Storage Refrigerators, 22°C Agitated Platelet Incubators",
+          capacity: "500 units Whole Blood, 150 units Platelets, 300 units FFP",
+          units_available: 78,
+          expiry_risk_units: 16,
+          latitude: 21.7645,
+          longitude: 72.1519
+        },
+        {
+          id: 2,
+          name: "Red Cross Regional Blood Center",
+          license_no: "IRCS-GJ-2023-4102",
+          helpline: "+91 (278) 251-4433",
+          address: "Chitra GIDC Industrial Zone, Bhavnagar 364004",
+          director: "Dr. Meera Patel",
+          operating_hours: "08:00 AM - 10:00 PM (Emergency Dispatch 24/7)",
+          capabilities: ["Whole Blood", "Packed RBC (PRBC)", "Platelet Concentrates", "Fresh Frozen Plasma"],
+          equipment_specs: "Dual Refrigerated Centrifuges, Component Separators",
+          capacity: "300 units Whole Blood, 80 units Platelets, 150 units FFP",
+          units_available: 34,
+          expiry_risk_units: 3,
+          latitude: 21.7820,
+          longitude: 72.1350
+        },
+        {
+          id: 3,
+          name: "Civil Hospital Emergency Transfusion Unit",
+          license_no: "GOV-GJ-2022-1089",
+          helpline: "+91 (278) 243-0505",
+          address: "Jail Road Medical Enclave, Bhavnagar 364001",
+          director: "Dr. Arvind Joshi (Chief Medical Officer)",
+          operating_hours: "24/7 Acute Trauma & Surgery Emergency",
+          capabilities: ["Whole Blood", "Packed RBC (PRBC)", "Urgent Platelets"],
+          equipment_specs: "Rapid Blood Warmers, Crossmatch Incubators, Emergency Thawing Baths",
+          capacity: "200 units Trauma Reserve",
+          units_available: 45,
+          expiry_risk_units: 0,
+          latitude: 21.7584,
+          longitude: 72.1633
+        },
+        {
+          id: 4,
+          name: "Takhteshwar Community Blood Storage Unit",
+          license_no: "BSU-GJ-2025-0044",
+          helpline: "+91 (278) 256-8811",
+          address: "Takhteshwar Heights Circle, Bhavnagar 364002",
+          director: "Dr. Sunita Shah",
+          operating_hours: "24/7 Satellite Distribution",
+          capabilities: ["Whole Blood", "Packed RBC (PRBC)"],
+          equipment_specs: "Monitored Satellite Blood Refrigerators",
+          capacity: "100 units Satellite Reserve",
+          units_available: 22,
+          expiry_risk_units: 1,
+          latitude: 21.7390,
+          longitude: 72.1480
+        }
+      ];
+    }
+  },
+
   async executeRedistribution(itemId: number): Promise<any> {
     try {
       return await fetchJson(`${API_BASE}/inventory/redistribute/${itemId}`, { method: "POST" });

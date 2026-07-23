@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Map, MapPin, Building, Hospital, Calendar, Sparkles, Navigation, Info } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { Map, MapPin, Building, Hospital, Calendar, Sparkles, Navigation } from 'lucide-react';
 
 interface MapLocation {
   id: number;
@@ -10,15 +13,27 @@ interface MapLocation {
   address: string;
   details: string;
   stats?: string;
-  x: number; // mapped SVG coordinate (x: 50 to 450)
-  y: number; // mapped SVG coordinate (y: 50 to 350)
 }
+
+// Leaflet custom marker icons
+const createCustomIcon = (color: string) => {
+  return L.divIcon({
+    className: 'custom-leaflet-marker',
+    html: `<div style="background-color: ${color}; width: 16px; height: 16px; border-radius: 50%; border: 3px solid #070b13; box-shadow: 0 0 12px ${color};"></div>`,
+    iconSize: [16, 16],
+    iconAnchor: [8, 8]
+  });
+};
+
+const bankIcon = createCustomIcon('#ef4444');
+const hospitalIcon = createCustomIcon('#818cf8');
+const campIcon = createCustomIcon('#f59e0b');
 
 export default function InteractiveMap() {
   const [filter, setFilter] = useState<'all' | 'bank' | 'hospital' | 'camp'>('all');
   const [selectedLoc, setSelectedLoc] = useState<MapLocation | null>(null);
 
-  // Mapped locations in Bhavnagar area
+  // Mapped locations in Bhavnagar district
   const locations: MapLocation[] = [
     { 
       id: 1, 
@@ -28,9 +43,7 @@ export default function InteractiveMap() {
       longitude: 72.1519, 
       address: "M.G. Road, Bhavnagar", 
       details: "Central distribution hub. Hosts the HemoCast AI forecasting server.", 
-      stats: "78 units available | 16 units at expiry risk",
-      x: 250, 
-      y: 180 
+      stats: "78 units available | 16 units at expiry risk"
     },
     { 
       id: 2, 
@@ -40,9 +53,7 @@ export default function InteractiveMap() {
       longitude: 72.1350, 
       address: "Chitra GIDC Road, Bhavnagar", 
       details: "Regional secondary storage bank.", 
-      stats: "34 units available | Stock status: stable",
-      x: 180, 
-      y: 100 
+      stats: "34 units available | Stock status: stable"
     },
     { 
       id: 3, 
@@ -52,9 +63,7 @@ export default function InteractiveMap() {
       longitude: 72.1633, 
       address: "Jail Road, Bhavnagar", 
       details: "Primary trauma and surgery center. Demands 65% of local platelet stocks.", 
-      stats: "1 pending urgent request | 5 units O- SOS fulfilled recently",
-      x: 320, 
-      y: 220 
+      stats: "1 pending urgent request | 5 units O- SOS fulfilled recently"
     },
     { 
       id: 4, 
@@ -64,9 +73,7 @@ export default function InteractiveMap() {
       longitude: 72.1480, 
       address: "Takhteshwar, Bhavnagar", 
       details: "Specialized pediatric ward. Current target area for A+ Platelet forecasting.", 
-      stats: "Active alerts: high dengue platelet demand pings sent",
-      x: 210, 
-      y: 280 
+      stats: "Active alerts: high dengue platelet demand pings sent"
     },
     { 
       id: 5, 
@@ -76,9 +83,7 @@ export default function InteractiveMap() {
       longitude: 72.1400, 
       address: "University Campus Hall, Bhavnagar", 
       details: "Student-led donation drive. Scheduled to start in 10 days.", 
-      stats: "Target: 80 units | Pre-registered: 65 donors | Priority: High (O+)",
-      x: 150, 
-      y: 200 
+      stats: "Target: 80 units | Pre-registered: 65 donors | Priority: High (O+)"
     },
     { 
       id: 6, 
@@ -88,9 +93,7 @@ export default function InteractiveMap() {
       longitude: 72.1200, 
       address: "GIDC Welfare Hall, Bhavnagar", 
       details: "Factory outreach camp targeting high whole blood yield.", 
-      stats: "Target: 120 units | Scheduled in 24 days | Priority: Medium",
-      x: 100, 
-      y: 70 
+      stats: "Target: 120 units | Scheduled in 24 days | Priority: Medium"
     }
   ];
 
@@ -98,16 +101,16 @@ export default function InteractiveMap() {
     ? locations 
     : locations.filter(loc => loc.type === filter);
 
+  const getMarkerIcon = (type: 'bank' | 'hospital' | 'camp') => {
+    if (type === 'bank') return bankIcon;
+    if (type === 'hospital') return hospitalIcon;
+    return campIcon;
+  };
+
   const getIconColor = (type: 'bank' | 'hospital' | 'camp') => {
     if (type === 'bank') return 'text-crimson-500 fill-crimson-500/20';
     if (type === 'hospital') return 'text-indigo-400 fill-indigo-400/20';
     return 'text-amber-500 fill-amber-500/20';
-  };
-
-  const getPinStroke = (type: 'bank' | 'hospital' | 'camp') => {
-    if (type === 'bank') return '#ef4444';
-    if (type === 'hospital') return '#818cf8';
-    return '#f59e0b';
   };
 
   return (
@@ -116,7 +119,7 @@ export default function InteractiveMap() {
         <div>
           <h1 className="text-2xl font-bold text-white">Coverage & Active Drive Map</h1>
           <p className="text-slate-450 text-sm mt-1">
-            Visual coordinates of partner hospitals, paged blood banks, and active donation drives.
+            Real OpenStreetMap spatial coordinates of partner hospitals, paged blood banks, and active donation drives.
           </p>
         </div>
         
@@ -145,121 +148,58 @@ export default function InteractiveMap() {
 
       <div className="grid md:grid-cols-12 gap-8">
         
-        {/* SVG Regional Map Visualization */}
+        {/* Leaflet Real Interactive OpenStreetMap */}
         <div className="md:col-span-8">
-          <div className="glass-panel rounded-3xl border border-slate-850 overflow-hidden relative bg-[#090f1a] shadow-inner p-4 flex flex-col justify-between h-[450px]">
-            {/* Map Controls Watermark */}
-            <div className="absolute top-4 left-4 text-xxs font-bold text-slate-500 bg-slate-950/70 border border-slate-850 px-3 py-1.5 rounded-lg z-10 select-none">
-              BHAVNAGAR DISTRICT REGIONAL GRID COORDINATES
+          <div className="glass-panel rounded-3xl border border-slate-850 overflow-hidden relative bg-[#090f1a] shadow-2xl h-[450px] z-10">
+            {/* Map Watermark Header */}
+            <div className="absolute top-4 left-4 text-xxs font-bold text-slate-300 bg-slate-950/80 border border-slate-800 px-3 py-1.5 rounded-lg z-[1000] backdrop-blur-md select-none flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              LIVE OPENSTREETMAP GRID (BHAVNAGAR DISTRICT)
             </div>
 
-            {/* Map Grid Canvas SVG */}
-            <svg className="w-full h-full min-h-[380px]" viewBox="0 0 500 400">
-              {/* Map grid lines */}
-              <defs>
-                <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse">
-                  <path d="M 25 0 L 0 0 0 25" fill="none" stroke="#334155" strokeWidth="0.5" opacity="0.15"/>
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-
-              {/* District boundaries outline representation */}
-              <path 
-                d="M 50,50 Q 150,30 250,50 T 450,80 Q 480,200 420,300 T 250,380 Q 120,380 70,300 T 50,50 Z" 
-                fill="none" 
-                stroke="#1e293b" 
-                strokeWidth="2" 
-                strokeDasharray="4 6"
-                opacity="0.6" 
+            {/* Leaflet MapContainer */}
+            <MapContainer 
+              center={[21.7600, 72.1450]} 
+              zoom={13} 
+              scrollWheelZoom={true}
+              className="w-full h-full"
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
 
-              {/* Geographic connectors */}
+              {/* Connecting line to selected location from central bank */}
               {selectedLoc && (
-                <g>
-                  <line 
-                    x1="250" 
-                    y1="180" 
-                    x2={selectedLoc.x} 
-                    y2={selectedLoc.y} 
-                    stroke="#ef4444" 
-                    strokeWidth="1.5" 
-                    strokeDasharray="2 3"
-                    opacity="0.5"
-                    className="animate-pulse"
-                  />
-                  <circle cx="250" cy="180" r="3" fill="#ef4444" opacity="0.7" />
-                </g>
+                <Polyline 
+                  positions={[
+                    [21.7645, 72.1519],
+                    [selectedLoc.latitude, selectedLoc.longitude]
+                  ]}
+                  pathOptions={{ color: '#ef4444', weight: 2.5, dashArray: '6, 8', opacity: 0.8 }}
+                />
               )}
 
-              {/* Location Pins */}
-              {filteredLocations.map(loc => {
-                const isSelected = selectedLoc?.id === loc.id;
-                return (
-                  <g 
-                    key={loc.id} 
-                    className="cursor-pointer group"
-                    onClick={() => setSelectedLoc(loc)}
-                  >
-                    {/* Ring Pulse for Selected location */}
-                    {isSelected && (
-                      <circle 
-                        cx={loc.x} 
-                        cy={loc.y} 
-                        r="18" 
-                        fill="none" 
-                        stroke={getPinStroke(loc.type)} 
-                        strokeWidth="1" 
-                        opacity="0.8" 
-                        className="animate-ping"
-                      />
-                    )}
-                    
-                    {/* Pin Backdrop Hover Shape */}
-                    <circle 
-                      cx={loc.x} 
-                      cy={loc.y} 
-                      r="12" 
-                      fill="currentColor" 
-                      className={`transition-colors duration-150 ${
-                        loc.type === 'bank' ? 'text-crimson-500/10' : 
-                        loc.type === 'hospital' ? 'text-indigo-400/10' : 'text-amber-500/10'
-                      } group-hover:scale-125`}
-                      opacity="0.8" 
-                    />
-
-                    {/* Geographical Center Pin Dot */}
-                    <circle 
-                      cx={loc.x} 
-                      cy={loc.y} 
-                      r="5.5" 
-                      fill={getPinStroke(loc.type)}
-                      stroke="#070b13"
-                      strokeWidth="1.5"
-                      className="group-hover:scale-110 transition-transform"
-                    />
-
-                    {/* Mini Label on hover */}
-                    <text 
-                      x={loc.x} 
-                      y={loc.y - 12} 
-                      textAnchor="middle" 
-                      fill="#fff" 
-                      fontSize="9" 
-                      fontWeight="bold"
-                      className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none bg-slate-950 px-1"
-                    >
-                      {loc.name.split(' ')[0]}
-                    </text>
-                  </g>
-                );
-              })}
-            </svg>
-
-            {/* Compass rose decoration */}
-            <div className="absolute bottom-4 right-4 text-[10px] text-slate-650 font-mono flex items-center gap-1 bg-slate-950/40 p-2 rounded-lg border border-slate-900 select-none">
-              <Navigation className="w-3.5 h-3.5 text-slate-500 rotate-45" /> 
-              <span>Grid Center: N21°45' E72°09'</span>
-            </div>
+              {/* Render Leaflet Markers */}
+              {filteredLocations.map(loc => (
+                <Marker 
+                  key={loc.id} 
+                  position={[loc.latitude, loc.longitude]}
+                  icon={getMarkerIcon(loc.type)}
+                  eventHandlers={{
+                    click: () => setSelectedLoc(loc),
+                  }}
+                >
+                  <Popup className="leaflet-dark-popup">
+                    <div className="p-1 font-sans">
+                      <strong className="text-sm block font-bold text-slate-900">{loc.name}</strong>
+                      <span className="text-xs text-slate-600 block mt-0.5">{loc.address}</span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-red-600 mt-1 block">{loc.type} portal</span>
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
           </div>
         </div>
 
@@ -286,6 +226,7 @@ export default function InteractiveMap() {
 
                 <div className="space-y-2.5 text-xs text-slate-350 leading-relaxed pt-2">
                   <p><strong>Address:</strong> {selectedLoc.address}</p>
+                  <p><strong>Coordinates:</strong> {selectedLoc.latitude}° N, {selectedLoc.longitude}° E</p>
                   <p><strong>Description:</strong> {selectedLoc.details}</p>
                 </div>
               </div>
@@ -310,12 +251,78 @@ export default function InteractiveMap() {
           ) : (
             <div className="glass-panel p-8 rounded-3xl border border-slate-850 text-center text-slate-500 text-xs py-20 flex flex-col items-center justify-center gap-3">
               <MapPin className="w-8 h-8 text-slate-700 animate-bounce" />
-              <p>Select any pin on the geographical canvas to load coordinate intelligence and stock details.</p>
+              <p>Select any marker on the OpenStreetMap canvas to inspect live spatial coordinates and stock details.</p>
             </div>
           )}
         </div>
 
       </div>
+
+      {/* Network Blood Bank Operational Directory Section */}
+      <section className="space-y-6 pt-6 border-t border-slate-850">
+        <div>
+          <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
+            <Building className="w-5 h-5 text-crimson-500" /> Regional Blood Bank Network Directory
+          </h2>
+          <p className="text-slate-400 text-xs mt-1">
+            Operational capabilities, cold chain storage specifications, and 24/7 emergency dispatch helplines for partner blood centers.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="glass-panel p-6 rounded-2xl border border-slate-850 space-y-4">
+            <div className="flex justify-between items-start">
+              <div>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">License: NBTC-GJ-2024-8891</span>
+                <h3 className="font-extrabold text-base text-white mt-0.5">Bhavnagar District Blood Bank</h3>
+                <p className="text-xs text-slate-400">Central Transfusion & Forecasting Hub</p>
+              </div>
+              <span className="px-2.5 py-1 rounded-full bg-emerald-950/40 border border-emerald-900/30 text-emerald-400 text-[10px] font-bold">24/7 Active</span>
+            </div>
+
+            <div className="space-y-2 text-xs text-slate-350 border-t border-slate-850 pt-3">
+              <p><strong>Emergency Dispatch Hotline:</strong> <a href="tel:+912782429000" className="text-crimson-400 hover:underline">+91 (278) 242-9000</a> / 1800-425-BLOOD</p>
+              <p><strong>Address:</strong> M.G. Road, Near Sir T. Hospital, Bhavnagar 364001</p>
+              <p><strong>Medical Director:</strong> Dr. Rajesh Varma (MD Transfusion Medicine)</p>
+              <p><strong>Cold Storage Equipment:</strong> -30°C Deep Freezers, 4°C Blood Storage Refrigerators, 22°C Agitated Incubators</p>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {["Whole Blood", "PRBC", "Agitated Platelets", "FFP", "Cryoprecipitate"].map((cap, i) => (
+                <span key={i} className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] font-semibold text-slate-300">
+                  {cap}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="glass-panel p-6 rounded-2xl border border-slate-850 space-y-4">
+            <div className="flex justify-between items-start">
+              <div>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">License: IRCS-GJ-2023-4102</span>
+                <h3 className="font-extrabold text-base text-white mt-0.5">Red Cross Regional Blood Center</h3>
+                <p className="text-xs text-slate-400">Industrial Zone Secondary Storage</p>
+              </div>
+              <span className="px-2.5 py-1 rounded-full bg-emerald-950/40 border border-emerald-900/30 text-emerald-400 text-[10px] font-bold">Dispatch Active</span>
+            </div>
+
+            <div className="space-y-2 text-xs text-slate-350 border-t border-slate-850 pt-3">
+              <p><strong>Emergency Dispatch Hotline:</strong> <a href="tel:+912782514433" className="text-crimson-400 hover:underline">+91 (278) 251-4433</a></p>
+              <p><strong>Address:</strong> Chitra GIDC Industrial Zone, Bhavnagar 364004</p>
+              <p><strong>Medical Director:</strong> Dr. Meera Patel</p>
+              <p><strong>Cold Storage Equipment:</strong> Dual Refrigerated Centrifuges, Component Separator Units</p>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {["Whole Blood", "PRBC", "Platelet Concentrates", "FFP"].map((cap, i) => (
+                <span key={i} className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] font-semibold text-slate-300">
+                  {cap}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

@@ -44,7 +44,7 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
           <div className="md:col-span-7 space-y-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400 text-xs font-medium">
               <span className="flex h-2 w-2 rounded-full bg-crimson-500"></span>
-              Built for ImpactForge Hackathon
+              Live Predictive Intelligence Network
             </div>
 
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
@@ -213,10 +213,10 @@ export default function Landing({ setCurrentPage, user }: LandingProps) {
       {/* Footer */}
       <footer className="py-8 bg-slate-950/80 border-t border-slate-900/60 mt-auto">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs">
-          <p>© 2026 HemoCast AI. Built for the ImpactForge Hackathon.</p>
+          <p>© 2026 HemoCast AI. All rights reserved. Real-time predictive blood supply management.</p>
           <div className="flex gap-6">
             <button onClick={() => setCurrentPage('map')} className="hover:text-slate-350 transition-colors">Coverage Map</button>
-            <button onClick={() => setCurrentPage('about')} className="hover:text-slate-350 transition-colors">Evaluation Hub</button>
+            <button onClick={() => setCurrentPage('about')} className="hover:text-slate-350 transition-colors">Platform Architecture</button>
           </div>
         </div>
       </footer>

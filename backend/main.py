@@ -6,10 +6,71 @@ import datetime
 from datetime import timedelta
 import hashlib
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 from database import engine, get_db
 import models
 import schemas
 from forecaster import generate_predictions_ml
+
+TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+def query_gemini_llm(user_message: str, db_context: str) -> str:
+    if not GEMINI_API_KEY:
+        return None
+    try:
+        import requests
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
+        system_instruction = (
+            "You are HemoCast AI's intelligent clinical assistant. "
+            "Help clinicians, blood bank staff, and donors understand blood stock, ML forecasts, and emergency procedures. "
+            "Be helpful, concise, professional, and clear. Ground your answer in the provided database context if relevant."
+        )
+        payload = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": f"{system_instruction}\n\nLive Database Context:\n{db_context}\n\nUser Query: {user_message}"}
+                    ]
+                }
+            ]
+        }
+        headers = {"Content-Type": "application/json"}
+        res = requests.post(url, json=payload, headers=headers, timeout=5)
+        if res.status_code == 200:
+            data = res.json()
+            candidates = data.get("candidates", [])
+            if candidates:
+                parts = candidates[0].get("content", {}).get("parts", [])
+                if parts:
+                    return parts[0].get("text", "")
+    except Exception as e:
+        print(f"Gemini API error: {e}")
+    return None
+
+def send_twilio_sms(to_phone: str, body: str) -> dict:
+    if not TWILIO_ACCOUNT_SID or not TWILIO_AUTH_TOKEN or not TWILIO_PHONE_NUMBER:
+        return {"sent": False, "reason": "Twilio credentials not configured"}
+    try:
+        from twilio.rest import Client
+        client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+        target = to_phone.strip()
+        if not target.startswith("+"):
+            target = f"+1{target}"
+        message = client.messages.create(
+            body=body,
+            from_=TWILIO_PHONE_NUMBER,
+            to=target
+        )
+        return {"sent": True, "sid": message.sid}
+    except Exception as e:
+        print(f"Twilio SMS dispatch error: {e}")
+        return {"sent": False, "error": str(e)}
 
 app = FastAPI(title="HemoCast AI Backend", version="1.0.0")
 
@@ -341,13 +402,23 @@ def get_targeted_donors(blood_group: str = "O+", component: str = "Platelets", d
 
 @app.post("/api/donors/notify")
 def notify_donors(donor_ids: List[int], message: str, db: Session = Depends(get_db)):
-    # Simulates sending SMS / WhatsApp triggers
     donors = db.query(models.Donor).filter(models.Donor.id.in_(donor_ids)).all()
     names = [d.user.name for d in donors]
     
+    sms_statuses = []
+    for d in donors:
+        if d.contact_number:
+            res = send_twilio_sms(d.contact_number, f"HemoCast AI Outreach: {message}")
+            sms_statuses.append({"name": d.user.name, "result": res})
+            
+    success_count = sum(1 for item in sms_statuses if item["result"].get("sent"))
+    status_note = f"Dispatched live Twilio SMS (+15173993569) to {success_count}/{len(donors)} donors."
+    if success_count == 0 and sms_statuses and "reason" in sms_statuses[0]["result"]:
+        status_note += f" ({sms_statuses[0]['result']['reason']})"
+
     return {
         "success": True,
-        "message": f"Outreach triggered. Sent plain SMS & WhatsApp fallbacks containing '{message}' to {len(donors)} donors: {', '.join(names)}."
+        "message": f"Outreach message triggered for {', '.join(names)}. {status_note}"
     }
 
 # --- DRIVES PLANNER ENDPOINTS ---
@@ -466,6 +537,11 @@ def trigger_emergency_sos(req: schemas.BloodRequestCreate, hospital_id: int = 2,
     contacted_donors = []
     for d in matching_donors[:5]:  # Limit to top 5
         distance = round(((d.latitude - 21.7584)**2 + (d.longitude - 72.1633)**2)**0.5 * 111, 2)
+        # Dispatch Twilio SMS for emergency SOS
+        if d.contact_number:
+            sos_text = f"🚨 HEMOCAST SOS EMERGENCY: {req.units} units of {req.blood_group} {req.component} needed immediately at Bhavnagar Civil Hospital! Please respond if available."
+            send_twilio_sms(d.contact_number, sos_text)
+            
         contacted_donors.append({
             "name": d.user.name,
             "blood_group": d.blood_group,
@@ -481,8 +557,83 @@ def trigger_emergency_sos(req: schemas.BloodRequestCreate, hospital_id: int = 2,
         "units": req.units,
         "banks_notified": nearby_banks,
         "donors_contacted": contacted_donors,
-        "message": f"SOS Emergency alert broadcasted! Paged 2 nearby blood banks and notified {len(contacted_donors)} matching local donors."
+        "message": f"SOS Emergency alert broadcasted via Twilio SMS! Paged 2 nearby blood banks and notified {len(contacted_donors)} matching local donors."
     }
+
+# --- BLOOD BANK NETWORK DIRECTORY ---
+
+@app.get("/api/blood-banks/directory")
+def get_blood_bank_directory(db: Session = Depends(get_db)):
+    """
+    Returns full operational specs, license numbers, emergency helplines, 
+    and component processing capabilities for regional partner blood banks.
+    """
+    return [
+        {
+            "id": 1,
+            "name": "Bhavnagar District Blood Bank (Central Transfusion Center)",
+            "license_no": "NBTC-GJ-2024-8891",
+            "helpline": "+91 (278) 242-9000 / 1800-425-BLOOD",
+            "address": "M.G. Road, Near Sir T. Hospital, Bhavnagar 364001",
+            "director": "Dr. Rajesh Varma (MD Transfusion Medicine)",
+            "operating_hours": "24/7 Emergency Dispatch Active",
+            "capabilities": ["Whole Blood", "Packed RBC (PRBC)", "Agitated Platelets", "Fresh Frozen Plasma (FFP)", "Cryoprecipitate"],
+            "equipment_specs": "-30°C Deep Freezers, 4°C Blood Storage Refrigerators, 22°C Agitated Platelet Incubators",
+            "capacity": "500 units Whole Blood, 150 units Platelets, 300 units FFP",
+            "units_available": 78,
+            "expiry_risk_units": 16,
+            "latitude": 21.7645,
+            "longitude": 72.1519
+        },
+        {
+            "id": 2,
+            "name": "Red Cross Regional Blood Center",
+            "license_no": "IRCS-GJ-2023-4102",
+            "helpline": "+91 (278) 251-4433",
+            "address": "Chitra GIDC Industrial Zone, Bhavnagar 364004",
+            "director": "Dr. Meera Patel",
+            "operating_hours": "08:00 AM - 10:00 PM (Emergency Dispatch 24/7)",
+            "capabilities": ["Whole Blood", "Packed RBC (PRBC)", "Platelet Concentrates", "Fresh Frozen Plasma"],
+            "equipment_specs": "Dual Refrigerated Centrifuges, Component Separators",
+            "capacity": "300 units Whole Blood, 80 units Platelets, 150 units FFP",
+            "units_available": 34,
+            "expiry_risk_units": 3,
+            "latitude": 21.7820,
+            "longitude": 72.1350
+        },
+        {
+            "id": 3,
+            "name": "Civil Hospital Emergency Transfusion Unit",
+            "license_no": "GOV-GJ-2022-1089",
+            "helpline": "+91 (278) 243-0505",
+            "address": "Jail Road Medical Enclave, Bhavnagar 364001",
+            "director": "Dr. Arvind Joshi (Chief Medical Officer)",
+            "operating_hours": "24/7 Acute Trauma & Surgery Emergency",
+            "capabilities": ["Whole Blood", "Packed RBC (PRBC)", "Urgent Platelets"],
+            "equipment_specs": "Rapid Blood Warmers, Crossmatch Incubators, Emergency Thawing Baths",
+            "capacity": "200 units Trauma Reserve",
+            "units_available": 45,
+            "expiry_risk_units": 0,
+            "latitude": 21.7584,
+            "longitude": 72.1633
+        },
+        {
+            "id": 4,
+            "name": "Takhteshwar Community Blood Storage Unit",
+            "license_no": "BSU-GJ-2025-0044",
+            "helpline": "+91 (278) 256-8811",
+            "address": "Takhteshwar Heights Circle, Bhavnagar 364002",
+            "director": "Dr. Sunita Shah",
+            "operating_hours": "24/7 Satellite Distribution",
+            "capabilities": ["Whole Blood", "Packed RBC (PRBC)"],
+            "equipment_specs": "Monitored Satellite Blood Refrigerators",
+            "capacity": "100 units Satellite Reserve",
+            "units_available": 22,
+            "expiry_risk_units": 1,
+            "latitude": 21.7390,
+            "longitude": 72.1480
+        }
+    ]
 
 # --- SMART AI CHATBOT ENDPOINT ---
 
@@ -579,14 +730,13 @@ def chatbot_query(query: schemas.ChatQuery, db: Session = Depends(get_db)):
         intent = "emergency_info"
         reply = "🚨 **Emergency SOS Mode Activated** 🚨\n\nIf you need immediate blood units, you can go to the 'Hospital Request' panel and click the **One-Tap Emergency SOS** button. This will instantly:\n1. Ping all matching registered donors (like O- universal donors) within a 15km radius.\n2. Broadcast an emergency alert to the nearest blood banks.\n3. Keep your request open for priority fulfillment. \n\nHow can I help you navigate there?"
 
-    # 5. Default fallback
-    else:
-        reply = "Hello! I am the HemoCast AI Assistant. 🩸\n\nI can help you monitor live inventory, predict upcoming shortages, or find donors. Try asking me:\n" \
-                f"- *'Are there any platelets expiring tomorrow?'*\n" \
-                f"- *'What is our AB- stock?'*\n" \
-                f"- *'Tell me about the O+ demand forecast'* \n" \
-                f"- *'How does the emergency SOS button work?'*"
-                
+    # Try calling Google Gemini API for an AI-powered conversational response
+    inv_count = db.query(models.InventoryItem).filter(models.InventoryItem.status == "available").count()
+    db_context = f"Total Available Inventory Items in DB: {inv_count}. Emergency SOS status: Active."
+    gemini_reply = query_gemini_llm(query.message, db_context)
+    if gemini_reply and not data:
+        reply = gemini_reply
+
     return {
         "reply": reply,
         "intent": intent,

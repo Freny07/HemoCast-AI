@@ -6,6 +6,23 @@ from models import HistoricalRecord, User
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 import math
+import requests
+
+def fetch_live_openmeteo_weather(lat: float = 21.7645, lon: float = 72.1519) -> dict:
+    """Fetches real-time weather metrics from Open-Meteo API (free, open access)."""
+    try:
+        url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,relative_humidity_2m,rain"
+        res = requests.get(url, timeout=3)
+        if res.status_code == 200:
+            data = res.json().get("current", {})
+            return {
+                "temperature": data.get("temperature_2m", 28.5),
+                "rainfall": data.get("rain", 5.0),
+                "humidity": data.get("relative_humidity_2m", 65.0)
+            }
+    except Exception as e:
+        print(f"Open-Meteo Weather API warning: {e}")
+    return {"temperature": 28.5, "rainfall": 5.0, "humidity": 65.0}
 
 def generate_predictions_ml(
     db: Session,
